@@ -1,0 +1,3 @@
+document.querySelector('.menu-toggle')?.addEventListener('click',()=>{const n=document.querySelector('#mainNav');const b=document.querySelector('.menu-toggle');const open=n.classList.toggle('open');b.setAttribute('aria-expanded',open);});
+document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()=>document.querySelector('#mainNav')?.classList.remove('open')));
+document.querySelector('#contactForm')?.addEventListener('submit',e=>{e.preventDefault();document.querySelector('#formNote').textContent='Grazie! Il messaggio è stato preparato. Per l’invio reale collega il form a un servizio email/backend.';e.target.reset();});
