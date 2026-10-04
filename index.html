@@ -2,101 +2,75 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Associazione Socio Culturale Lassù dove Volano gli Aquiloni – Giovanni per Sempre">
 <title>Lassù dove Volano gli Aquiloni – Giovanni per Sempre</title>
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="topbar">
-  <a class="logo-link" href="#home" aria-label="Home">
-    <img src="assets/logo.jpg" alt="Associazione Socio Culturale Lassù dove Volano gli Aquiloni – Giovanni per Sempre">
+<header class="site-header">
+  <a class="brand" href="#home" aria-label="Lassù dove Volano gli Aquiloni">
+    <img src="assets/logo.jpg" alt="Logo Lassù dove Volano gli Aquiloni – Giovanni per Sempre">
+    <span><strong>Lassù dove Volano gli Aquiloni</strong><small>Giovanni per Sempre</small></span>
   </a>
-  <nav id="mainNav" aria-label="Navigazione principale">
-    <a class="active" href="#home">Home</a>
+  <button class="menu-toggle" aria-label="Apri menu">☰</button>
+  <nav class="nav">
     <a href="#chi-siamo">Chi siamo</a>
-    <a href="#attivita">Le nostre attività</a>
+    <a href="#attivita">Attività</a>
     <a href="#eventi">Eventi</a>
-    <a href="#news">Novità</a>
-    <a href="#galleria">Galleria fotografica</a>
-    <a href="#contatti">Contatti</a>
+    <a href="#galleria">Galleria</a>
+    <a class="nav-cta" href="#contatti">Contatti</a>
   </nav>
-  <button class="menu" aria-label="Apri menu" aria-expanded="false">☰</button>
 </header>
 
 <main id="home">
-  <section class="hero">
-    <img src="assets/hero.jpg" alt="">
-    <div class="hero-content">
-      <p class="hero-title">Lassù dove Volano gli Aquiloni</p>
-      <p class="hero-subtitle">Giovanni per Sempre</p>
-      <p class="hero-text">Insieme per la cultura, la solidarietà e la bellezza delle piccole grandi cose.</p>
-      <a class="cta" href="#chi-siamo">Scopri di più <span>→</span></a>
-    </div>
-  </section>
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">ASSOCIAZIONE SOCIO CULTURALE · ETS</p>
+    <h1>Lassù dove<br><span>Volano gli Aquiloni</span></h1>
+    <p class="hero-subtitle">Giovanni per Sempre</p>
+    <p class="hero-text">Cultura, solidarietà, memoria e comunità. Un luogo dove le idee diventano iniziative e i sogni possono prendere il volo.</p>
+    <div class="hero-actions"><a class="button primary" href="#chi-siamo">Scopri chi siamo</a><a class="button ghost" href="#eventi">Prossimi eventi</a></div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div>
+    <div class="kite kite-one"></div><div class="kite kite-two"></div>
+    <div class="rainbow"><i></i><i></i><i></i><i></i></div>
+  </div>
+</section>
 
-  <section class="cards" aria-label="Sezioni principali">
-    <a class="card blue" href="#chi-siamo"><span class="round">♣</span><h2>Chi siamo</h2><p>Una realtà nata dal cuore e dalla condivisione.</p><span class="more">Scopri di più →</span></a>
-    <a class="card pink" href="#attivita"><span class="round">✎</span><h2>Le nostre attività</h2><p>Laboratori, iniziative culturali e momenti di condivisione.</p><span class="more">Scopri di più →</span></a>
-    <a class="card green" href="#eventi"><span class="round">▦</span><h2>Eventi</h2><p>Incontri e appuntamenti dell'associazione.</p><span class="more">Scopri di più →</span></a>
-    <a class="card yellow" href="#news"><span class="round">★</span><h2>Novità</h2><p>News e aggiornamenti.</p><span class="more">Scopri di più →</span></a>
-    <a class="card purple" href="#galleria"><span class="round">▧</span><h2>Galleria fotografica</h2><p>Immagini e ricordi delle nostre iniziative.</p><span class="more">Scopri di più →</span></a>
-  </section>
+<section class="intro" id="chi-siamo">
+  <div><p class="eyebrow">CHI SIAMO</p><h2>Insieme, per far volare i nostri sogni.</h2></div>
+  <p>Siamo un’associazione che promuove cultura, partecipazione e solidarietà attraverso incontri, iniziative, eventi e momenti di condivisione. Mettiamo al centro le persone e il valore di stare insieme.</p>
+</section>
 
-  <section class="simple-section" id="chi-siamo">
-    <h2>Chi siamo</h2>
-    <div class="line"></div>
-    <p class="admin-space">Contenuti dell'associazione in preparazione.</p>
-  </section>
+<section class="cards" id="attivita">
+  <article><span>01</span><h3>Cultura</h3><p>Incontri, presentazioni e iniziative per valorizzare il territorio e la memoria.</p></article>
+  <article><span>02</span><h3>Solidarietà</h3><p>Progetti e azioni concrete per costruire una comunità più attenta e inclusiva.</p></article>
+  <article><span>03</span><h3>Comunità</h3><p>Spazi di incontro per famiglie, giovani, volontari e tutte le persone che vogliono partecipare.</p></article>
+</section>
 
-  <section class="simple-section" id="attivita">
-    <h2>Le nostre attività</h2>
-    <div class="line"></div>
-    <p class="admin-space">Contenuti e attività saranno inseriti dall'amministratore.</p>
-  </section>
+<section class="events" id="eventi">
+  <div class="section-heading"><div><p class="eyebrow">EVENTI</p><h2>Le nostre iniziative</h2></div><span class="line"></span></div>
+  <div class="event-grid">
+    <article class="event-card"><div class="date">EVENTO</div><h3>Incontri e attività associative</h3><p>Segui questa sezione per conoscere i prossimi appuntamenti.</p><a href="#contatti">Chiedi informazioni →</a></article>
+    <article class="event-card featured"><div class="date">COMUNITÀ</div><h3>Partecipa con noi</h3><p>La porta dell’associazione è aperta a idee, collaborazioni e nuove persone.</p><a href="#contatti">Contattaci →</a></article>
+  </div>
+</section>
 
-  <section class="blue-section" id="eventi">
-    <h2>Eventi in evidenza</h2>
-    <div class="line"></div>
-    <p class="empty-message">Al momento non ci sono eventi in programma.</p>
-  </section>
+<section class="gallery" id="galleria">
+  <div class="section-heading"><div><p class="eyebrow">GALLERIA</p><h2>Momenti da ricordare</h2></div></div>
+  <div class="gallery-grid"><div class="tile t1">Insieme</div><div class="tile t2">Cultura</div><div class="tile t3">Sorrisi</div><div class="tile t4">Solidarietà</div></div>
+</section>
 
-  <section class="simple-section" id="news">
-    <h2>Novità</h2>
-    <div class="line"></div>
-    <p class="admin-space">Nessuna novità pubblicata.</p>
-  </section>
-
-  <section class="simple-section" id="galleria">
-    <h2>Galleria fotografica</h2>
-    <div class="line"></div>
-    <p class="admin-space">La galleria sarà aggiornata con le fotografie delle nostre iniziative.</p>
-  </section>
-
-  <section class="contact" id="contatti">
-    <div>
-      <h2>Contatti / Scrivici</h2>
-      <p>Siamo disponibili per informazioni, collaborazioni e nuove idee.</p>
-      <p><strong>Email</strong><br><a href="mailto:lassudovevolanogliaquiloni@gmail.com">lassudovevolanogliaquiloni@gmail.com</a></p>
-      <p><strong>PEC</strong><br><a href="mailto:lassudovevolanogliaquiloni@pec.it">lassudovevolanogliaquiloni@pec.it</a></p>
-    </div>
-    <form onsubmit="return false">
-      <input type="text" placeholder="Nome" aria-label="Nome">
-      <input type="email" placeholder="Email" aria-label="Email">
-      <textarea placeholder="Messaggio" aria-label="Messaggio"></textarea>
-      <button type="submit">Invia messaggio</button>
-    </form>
-  </section>
+<section class="contact" id="contatti">
+  <div class="contact-copy"><p class="eyebrow">CONTATTI</p><h2>Parliamo, collaboriamo, costruiamo.</h2><p>Per informazioni sulle attività dell’associazione, eventi e collaborazioni puoi scriverci direttamente.</p>
+  <div class="contact-links"><a href="mailto:lassudovevolanogliaquiloni@gmail.com">✉ lassudovevolanogliaquiloni@gmail.com</a><a href="mailto:lassudovevolanogliaquiloni@pec.it">✉ lassudovevolanogliaquiloni@pec.it</a></div></div>
+  <form class="contact-form" action="mailto:lassudovevolanogliaquiloni@gmail.com" method="post" enctype="text/plain"><label>Nome<input name="nome" required></label><label>Email<input name="email" type="email" required></label><label>Messaggio<textarea name="messaggio" rows="5" required></textarea></label><button class="button primary" type="submit">Invia messaggio</button></form>
+</section>
 </main>
 
-<footer>
-  <img src="assets/logo.jpg" alt="" class="footer-logo">
-  <div>
-    <strong>Associazione Socio Culturale “Lassù dove Volano gli Aquiloni”</strong><br>
-    Giovanni per Sempre
-  </div>
-  <div class="legal">Codice Fiscale <strong>95211430657</strong><br>Associazione iscritta al RUNTS – ETS</div>
-  <div class="motto">♡ Insieme, per far volare i nostri sogni! ♡</div>
-</footer>
+<footer><div class="footer-brand"><img src="assets/logo.jpg" alt=""><div><strong>Lassù dove Volano gli Aquiloni</strong><span>Giovanni per Sempre</span></div></div><div><p>Associazione iscritta al RUNTS – ETS</p><p>C.F. 95211430657</p></div><p class="motto">Insieme, per far volare i nostri sogni!</p></footer>
 <script src="script.js"></script>
 </body>
 </html>
