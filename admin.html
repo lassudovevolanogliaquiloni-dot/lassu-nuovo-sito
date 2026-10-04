@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Area amministratore — Lassù dove volano gli Aquiloni</title><link rel="stylesheet" href="admin.css"></head>
+<body>
+<div id="login" class="login"><div class="login-box"><img src="assets/logo.jpg" alt="Logo"><h1>Area amministratore</h1><p>Gestisci eventi, novità e messaggi del sito.</p><form id="loginForm"><input id="user" placeholder="Nome utente" required><input id="pass" type="password" placeholder="Password" required><button>Accedi</button><small>Demo locale: admin / aquiloni2026</small></form><a href="index.html">← Torna al sito</a></div></div>
+<div id="app" class="app hidden">
+<header><div class="top"><img src="assets/logo.jpg"><div><b>Area amministratore</b><span>Associazione Socio Culturale</span></div><button id="logout">Esci</button></div></header>
+<main>
+<div class="stats"><div><b id="eventCount">0</b><span>Eventi pubblicati</span></div><div><b id="newsCount">0</b><span>Novità</span></div><div><b id="messageCount">0</b><span>Messaggi</span></div></div>
+<section class="panel"><div class="panel-title"><h2>Eventi</h2><button class="add" id="newEvent">+ Nuovo evento</button></div><p class="hint">Gli eventi del 2025 non sono inclusi. Gli esempi presenti sono aggiornati al 2026.</p><div id="eventsList"></div></section>
+<section class="panel"><div class="panel-title"><h2>Novità</h2><button class="add" id="newNews">+ Nuova novità</button></div><div id="newsList"></div></section>
+<section class="panel"><div class="panel-title"><h2>Messaggi ricevuti</h2><button class="danger" id="clearMessages">Svuota</button></div><div id="messagesList"></div></section>
+</main></div>
+<div id="modal" class="modal hidden"><div class="modal-box"><button class="close" id="closeModal">×</button><h2 id="modalTitle">Nuovo evento</h2><form id="itemForm"><input type="hidden" id="itemType"><input type="hidden" id="itemId"><label>Titolo<input id="title" required></label><label>Data<input id="date" type="date"></label><label>Luogo<input id="place"></label><label>Descrizione<textarea id="description" rows="4"></textarea></label><div class="modal-actions"><button type="button" class="secondary" id="cancel">Annulla</button><button>Salva</button></div></form></div></div>
+<script src="admin.js"></script></body></html>
