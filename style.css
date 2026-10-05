@@ -15,3 +15,5 @@
 .social-links a svg{display:block!important;width:44px!important;height:44px!important;flex:none!important}
 
 .footer-legal{font:inherit;font-size:inherit;line-height:inherit;font-weight:inherit;display:inline-block;margin-top:2px}
+
+.flying-kite{position:absolute;z-index:3;width:82px;pointer-events:none;filter:drop-shadow(0 5px 5px #075eaa33)}.flying-kite img{display:block;width:100%;height:auto}.kite-a{left:8%;top:150px;animation:kiteDriftA 10s ease-in-out infinite}.kite-b{right:9%;top:185px;width:68px;animation:kiteDriftB 12s ease-in-out infinite}.kite-c{left:27%;top:285px;width:52px;animation:kiteDriftC 9s ease-in-out infinite}@keyframes kiteDriftA{0%,100%{transform:translate(0,0) rotate(-8deg)}50%{transform:translate(55px,-24px) rotate(8deg)}}@keyframes kiteDriftB{0%,100%{transform:translate(0,0) rotate(7deg)}50%{transform:translate(-45px,28px) rotate(-10deg)}}@keyframes kiteDriftC{0%,100%{transform:translate(0,0) rotate(-3deg)}50%{transform:translate(32px,-20px) rotate(12deg)}}@media(max-width:500px){.flying-kite{width:58px}.kite-b{width:50px}.kite-c{width:42px}.kite-a{left:2%;top:175px}.kite-b{right:1%;top:205px}.kite-c{left:18%;top:315px}}
