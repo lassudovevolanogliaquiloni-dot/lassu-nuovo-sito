@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+backend:
+  name: github
+  repo: lassudovevolanogliaquiloni-dot/lassu-nuovo-sito
+  branch: main
+  auth_methods:
+    - token
+
+media_folder: /assets
+public_folder: /assets
+
+collections:
+  - name: contenuti
+    label: Contenuti del sito
+    files:
+      - name: sito
+        label: Home ed eventi
+        file: content.json
+        format: json
+        fields:
+          - name: site
+            label: Testi della home
+            widget: object
+            fields:
+              - name: title
+                label: Titolo
+                widget: string
+              - name: subtitle
+                label: Sottotitolo
+                widget: string
+              - name: tagline
+                label: Frase sotto il titolo
+                widget: text
+          - name: events
+            label: Eventi
+            label_singular: Evento
+            widget: list
+            fields:
+              - name: title
+                label: Titolo evento
+                widget: string
+              - name: description
+                label: Descrizione
+                widget: text
