@@ -1,24 +1,105 @@
 <!doctype html>
-<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Area amministratore</title>
-<style>
-body{margin:0;background:#e9f9ff;color:#075eaa;font-family:Arial,sans-serif}.wrap{max-width:760px;margin:auto;padding:18px}.box{background:#fff;border-radius:18px;padding:20px;margin:14px 0;box-shadow:0 5px 22px #075eaa18}h1{margin:0 0 6px;color:#ef2739}h2{margin-top:0}label{display:block;font-size:12px;font-weight:700;margin:12px 0 5px}input,textarea{width:100%;box-sizing:border-box;border:1px solid #c8e5f1;border-radius:10px;padding:12px;font:14px Arial}textarea{min-height:90px}button{border:0;border-radius:22px;padding:12px 18px;background:#0878c8;color:#fff;font-weight:700;margin-top:12px}.danger{background:#ef2739}.event{border:1px solid #d8edf5;border-radius:12px;padding:12px;margin:10px 0}.muted{font-size:12px;color:#55788c}.row{display:flex;gap:8px;align-items:center}.row input{flex:1}.top{display:flex;justify-content:space-between;align-items:center;gap:10px}.small{padding:8px 12px;font-size:12px}@media(max-width:600px){.wrap{padding:10px}.box{padding:15px}}
-</style></head>
-<body><div class="wrap">
-<div class="box top"><div><h1>Area amministratore</h1><div class="muted">Aggiorna il sito da smartphone o computer</div></div><a href="./" style="color:#0878c8;font-weight:700">Vai al sito</a></div>
-<div class="box" id="login"><h2>Accesso</h2><p class="muted">Per pubblicare serve un token GitHub con permesso <b>Contents: Read and write</b> su questo repository. Il token viene usato solo in questa sessione.</p>
-<label>Token GitHub</label><input id="token" type="password" autocomplete="off" placeholder="github_pat_…"><button onclick="load()">Accedi</button><p id="msg" class="muted"></p></div>
-<div class="box" id="panel" hidden><div class="top"><h2>Contenuti</h2><button class="danger small" onclick="logout()">Esci</button></div>
-<label>Titolo</label><input id="title"><label>Sottotitolo</label><input id="subtitle"><label>Frase introduttiva</label><textarea id="tagline"></textarea>
-<h2 style="margin-top:24px">Eventi</h2><div id="events"></div><button onclick="addEvent()">+ Aggiungi evento</button><br><button onclick="save()">Salva e pubblica</button><p id="status" class="muted"></p></div>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Area amministratore — Lassù dove Volano gli Aquiloni</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<section id="login" class="login">
+  <div class="login-box">
+    <h1>Area amministratore</h1>
+    <p>Gestisci gli eventi dell'associazione.</p>
+
+    <form id="loginForm">
+      <input id="email" type="email" autocomplete="email" placeholder="Email" required>
+      <input id="password" type="password" autocomplete="current-password" placeholder="Password" required>
+      <button type="submit">Accedi</button>
+    </form>
+
+    <p id="loginMessage" class="hint"></p>
+    <a href="./">← Torna al sito</a>
+  </div>
+</section>
+
+<section id="app" class="app hidden">
+  <header class="top">
+    <div>
+      <strong>Area amministratore</strong>
+      <span id="userEmail"></span>
+    </div>
+    <button id="logout">Esci</button>
+  </header>
+
+  <main>
+    <div class="stats">
+      <div>
+        <b id="eventCount">0</b>
+        <span>Eventi</span>
+      </div>
+    </div>
+
+    <section class="panel">
+      <div class="panel-title">
+        <div>
+          <h2>Eventi</h2>
+          <p class="hint">Aggiungi, modifica o elimina gli appuntamenti del sito.</p>
+        </div>
+        <button id="newEvent" class="add">+ Nuovo evento</button>
+      </div>
+
+      <div id="eventsList"></div>
+    </section>
+  </main>
+</section>
+
+<div id="modal" class="modal hidden">
+  <div class="modal-box">
+    <button id="closeModal" class="close" type="button">×</button>
+
+    <h2 id="modalTitle">Nuovo evento</h2>
+
+    <form id="eventForm">
+      <label>
+        Titolo
+        <input id="title" required>
+      </label>
+
+      <label>
+        Data
+        <input id="date" type="date">
+      </label>
+
+      <label>
+        Luogo
+        <input id="place">
+      </label>
+
+      <label>
+        Descrizione
+        <textarea id="description" rows="5"></textarea>
+      </label>
+
+      <label>
+        <input id="published" type="checkbox" checked>
+        Pubblicato sul sito
+      </label>
+
+      <div class="modal-actions">
+        <button id="cancel" class="secondary" type="button">Annulla</button>
+        <button type="submit">Salva</button>
+      </div>
+    </form>
+
+    <p id="formMessage" class="hint"></p>
+  </div>
 </div>
-<script>
-const API='https://api.github.com/repos/lassudovevolanogliaquiloni-dot/lassu-nuovo-sito/contents/content.json';let sha='',events=[];
-const $=id=>document.getElementById(id);
-function headers(){return {'Accept':'application/vnd.github+json','Authorization':'Bearer '+$('token').value.trim(),'X-GitHub-Api-Version':'2022-11-28'};}
-async function load(){if(!$('token').value.trim())return $('msg').textContent='Inserisci il token.';try{let r=await fetch(API,{headers:headers()});if(!r.ok)throw Error();let j=await r.json();sha=j.sha;let data=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,'')))));$('title').value=data.site?.title||'';$('subtitle').value=data.site?.subtitle||'';$('tagline').value=data.site?.tagline||'';events=data.events||[];render();$('login').hidden=true;$('panel').hidden=false}catch(e){$('msg').textContent='Accesso non riuscito: controlla token e permessi.'}}
-function render(){ $('events').innerHTML=events.length?events.map((e,i)=>'<div class="event"><div class="row"><input placeholder="Titolo evento" value="'+esc(e.title||'')+'" oninput="events['+i+'].title=this.value"><button class="danger small" onclick="events.splice('+i+',1);render()">Elimina</button></div><label>Descrizione</label><textarea oninput="events['+i+'].description=this.value">'+esc(e.description||'')+'</textarea></div>').join(''):'<p class="muted">Nessun evento pubblicato.</p>'}
-function addEvent(){events.push({title:'Nuovo evento',description:''});render()}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-async function save(){let data={site:{title:$('title').value,subtitle:$('subtitle').value,tagline:$('tagline').value},events};let body=btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));let r=await fetch(API,{method:'PUT',headers:{...headers(),'Content-Type':'application/json'},body:JSON.stringify({message:'Aggiorna contenuti dal pannello amministratore',content:body,sha,branch:'main'})});if(r.ok){let j=await r.json();sha=j.content.sha;$('status').textContent='Pubblicato. GitHub Pages aggiornerà il sito automaticamente.'}else $('status').textContent='Errore nella pubblicazione.'}
-function logout(){$('token').value='';$('panel').hidden=true;$('login').hidden=false}
-</script></body></html>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="admin-config.js"></script>
+<script src="admin.js"></script>
+
+</body>
+</html>
