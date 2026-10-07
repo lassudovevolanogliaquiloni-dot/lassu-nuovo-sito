@@ -18,6 +18,7 @@ function esc(s) {
 
 function showApp(email) {
   $('login').classList.add('hidden');
+  $('resetPassword').classList.add('hidden');
   $('app').classList.remove('hidden');
   $('userEmail').textContent = email ? ' · ' + email : '';
   loadEvents();
@@ -25,6 +26,7 @@ function showApp(email) {
 
 function showLogin() {
   $('app').classList.add('hidden');
+  $('resetPassword').classList.add('hidden');
   $('login').classList.remove('hidden');
 }
 
@@ -211,6 +213,39 @@ $('forgotPassword').onclick = async () => {
     'Controlla la tua email: abbiamo inviato il link per reimpostare la password.';
 };
 
+$('resetPasswordForm').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const password = $('newPassword').value;
+  const confirmPassword = $('confirmPassword').value;
+
+  if (password !== confirmPassword) {
+    $('resetMessage').textContent =
+      'Le due password non coincidono.';
+    return;
+  }
+
+  $('resetMessage').textContent =
+    'Salvataggio della nuova password…';
+
+  const { error } = await client.auth.updateUser({
+    password: password
+  });
+
+  if (error) {
+    $('resetMessage').textContent =
+      'Errore: ' + error.message;
+    return;
+  }
+
+  $('resetMessage').textContent =
+    'Password aggiornata. Ora puoi accedere.';
+
+  setTimeout(() => {
+    showLogin();
+  }, 1500);
+});
+
 $('logout').onclick = async () => {
   await client.auth.signOut();
   showLogin();
@@ -221,5 +256,17 @@ $('logout').onclick = async () => {
 
   if (data.session) {
     showApp(data.session.user.email);
+  } else {
+    $('login').classList.remove('hidden');
+    $('resetPassword').classList.add('hidden');
+    $('app').classList.add('hidden');
   }
 })();
+
+client.auth.onAuthStateChange((event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    $('login').classList.add('hidden');
+    $('app').classList.add('hidden');
+    $('resetPassword').classList.remove('hidden');
+  }
+});
