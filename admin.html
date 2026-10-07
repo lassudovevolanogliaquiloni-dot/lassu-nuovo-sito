@@ -31,8 +31,18 @@
 
     <a href="./">← Torna al sito</a>
   </div>
+</section><section id="resetPassword" class="login hidden">
+  <div class="login-box">
+    <h1>Nuova password</h1>
+    <p>Inserisci la nuova password.</p>
+    <form id="resetPasswordForm">
+      <input id="newPassword" type="password" placeholder="Nuova password" required minlength="6">
+      <input id="confirmPassword" type="password" placeholder="Ripeti la nuova password" required minlength="6">
+      <button type="submit">Salva nuova password</button>
+    </form>
+    <p id="resetMessage" class="hint"></p>
+  </div>
 </section>
-
 <section id="app" class="app hidden">
   <header class="top">
     <div>
