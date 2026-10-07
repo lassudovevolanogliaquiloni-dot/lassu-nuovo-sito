@@ -251,6 +251,14 @@ $('logout').onclick = async () => {
   showLogin();
 };
 
+client.auth.onAuthStateChange((event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    $('login').classList.add('hidden');
+    $('app').classList.add('hidden');
+    $('resetPassword').classList.remove('hidden');
+  }
+});
+
 (async () => {
   const { data } = await client.auth.getSession();
 
@@ -262,11 +270,3 @@ $('logout').onclick = async () => {
     $('app').classList.add('hidden');
   }
 })();
-
-client.auth.onAuthStateChange((event, session) => {
-  if (event === 'PASSWORD_RECOVERY') {
-    $('login').classList.add('hidden');
-    $('app').classList.add('hidden');
-    $('resetPassword').classList.remove('hidden');
-  }
-});
