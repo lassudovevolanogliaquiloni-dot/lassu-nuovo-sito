@@ -180,6 +180,37 @@ $('loginForm').addEventListener('submit', async e => {
   showApp(data.user.email);
 });
 
+$('forgotPassword').onclick = async () => {
+  const email = $('email').value.trim();
+
+  if (!email) {
+    $('loginMessage').textContent =
+      'Inserisci prima la tua email.';
+    return;
+  }
+
+  $('loginMessage').textContent =
+    'Invio del link di recupero…';
+
+  const redirectTo =
+    window.location.origin +
+    window.location.pathname;
+
+  const { error } = await client.auth.resetPasswordForEmail(
+    email,
+    { redirectTo }
+  );
+
+  if (error) {
+    $('loginMessage').textContent =
+      'Errore: ' + error.message;
+    return;
+  }
+
+  $('loginMessage').textContent =
+    'Controlla la tua email: abbiamo inviato il link per reimpostare la password.';
+};
+
 $('logout').onclick = async () => {
   await client.auth.signOut();
   showLogin();
