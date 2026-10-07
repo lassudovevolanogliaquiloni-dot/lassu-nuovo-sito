@@ -196,7 +196,7 @@ $('forgotPassword').onclick = async () => {
 
   const redirectTo =
     window.location.origin +
-    window.location.pathname;
+    window.location.pathname.replace(/\/admin\.html$/, '/reset-password.html');
 
   const { error } = await client.auth.resetPasswordForEmail(
     email,
