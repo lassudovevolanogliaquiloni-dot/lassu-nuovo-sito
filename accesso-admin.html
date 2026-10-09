@@ -125,83 +125,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="admin-config.js"></script>
-<script src="admin.js?v=20261009b"></script>
-<script>
-window.avviaLogin = async function (event) {
-  console.log('LOGIN CLICK');
-  if (event) event.preventDefault();
+<script src="admin.js?v=20261009d"></script>
 
-  const message = document.getElementById('loginMessage');
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-
-  if (!email || !password) {
-    message.textContent = 'Inserisci email e password.';
-    return;
-  }
-
-  message.textContent = 'Accesso in corso…';
-
-  try {
-    const loginClient = window.supabase.createClient(
-      window.SUPABASE_URL,
-      window.SUPABASE_PUBLISHABLE_KEY
-    );
-
-    const result = await loginClient.auth.signInWithPassword({
-      email: email,
-      password: password
-    });
-
-    if (result.error) {
-      console.error('Supabase login error:', result.error);
-      message.textContent = 'Accesso non riuscito: ' + result.error.message;
-      return;
-    }
-
-    message.textContent = 'Accesso effettuato.';
-    document.getElementById('login').classList.add('hidden');
-    document.getElementById('resetPassword').classList.add('hidden');
-    document.getElementById('app').classList.remove('hidden');
-    document.getElementById('userEmail').textContent = ' · ' + result.data.user.email;
-  } catch (e) {
-    message.textContent = 'Errore: ' + (e.message || e);
-  }
-};
-
-window.avviaRecuperoPassword = async function () {
-  const message = document.getElementById('loginMessage');
-  const email = document.getElementById('email').value.trim();
-
-  if (!email) {
-    message.textContent = 'Inserisci prima la tua email.';
-    return;
-  }
-
-  message.textContent = 'Invio del link di recupero…';
-
-  try {
-    const recoveryClient = window.supabase.createClient(
-      window.SUPABASE_URL,
-      window.SUPABASE_PUBLISHABLE_KEY
-    );
-
-    const redirectTo = window.location.origin + '/lassu-nuovo-sito/reset-password.html';
-
-    const result = await recoveryClient.auth.resetPasswordForEmail(email, {
-      redirectTo: redirectTo
-    });
-
-    if (result.error) {
-      message.textContent = 'Errore: ' + result.error.message;
-    } else {
-      message.textContent = 'Controlla la tua email: abbiamo inviato il link per reimpostare la password.';
-    }
-  } catch (e) {
-    message.textContent = 'Errore: ' + (e.message || e);
-  }
-};
-</script>
 
 <!-- deployment refresh 2026-10-09 -->
 </body>
