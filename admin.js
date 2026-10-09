@@ -175,7 +175,7 @@ $('loginForm').addEventListener('submit', async e => {
 
   if (error) {
     $('loginMessage').textContent =
-      'Accesso non riuscito. Controlla email e password.';
+      'Accesso non riuscito: ' + error.message;
     return;
   }
 
