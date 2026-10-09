@@ -154,7 +154,8 @@ window.avviaLogin = async function (event) {
     });
 
     if (result.error) {
-      message.textContent = 'Accesso non riuscito. Controlla email e password.';
+      console.error('Supabase login error:', result.error);
+      message.textContent = 'Accesso non riuscito: ' + result.error.message;
       return;
     }
 
