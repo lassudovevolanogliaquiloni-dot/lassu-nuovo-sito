@@ -160,7 +160,10 @@ window.avviaLogin = async function (event) {
     }
 
     message.textContent = 'Accesso effettuato.';
-    showApp(result.data.user.email);
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('resetPassword').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    document.getElementById('userEmail').textContent = ' · ' + result.data.user.email;
   } catch (e) {
     message.textContent = 'Errore: ' + (e.message || e);
   }
