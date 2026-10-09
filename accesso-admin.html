@@ -160,7 +160,7 @@ window.avviaLogin = async function (event) {
     }
 
     message.textContent = 'Accesso effettuato.';
-    window.location.reload();
+    showApp(result.data.user.email);
   } catch (e) {
     message.textContent = 'Errore: ' + (e.message || e);
   }
