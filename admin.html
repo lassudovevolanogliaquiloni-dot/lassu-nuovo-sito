@@ -20,7 +20,7 @@
       <input id="password" type="password" autocomplete="current-password"
              placeholder="Password" required>
 
-      <button type="submit">Accedi</button>
+      <button type="submit" onclick="window.avviaLogin(event)">Accedi</button>
     </form>
 
     <button id="forgotPassword" type="button" onclick="window.avviaRecuperoPassword()">
@@ -127,6 +127,43 @@
 <script src="admin-config.js"></script>
 <script src="admin.js?v=20261010"></script>
 <script>
+window.avviaLogin = async function (event) {
+  if (event) event.preventDefault();
+
+  const message = document.getElementById('loginMessage');
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  if (!email || !password) {
+    message.textContent = 'Inserisci email e password.';
+    return;
+  }
+
+  message.textContent = 'Accesso in corso…';
+
+  try {
+    const loginClient = window.supabase.createClient(
+      window.SUPABASE_URL,
+      window.SUPABASE_PUBLISHABLE_KEY
+    );
+
+    const result = await loginClient.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if (result.error) {
+      message.textContent = 'Accesso non riuscito. Controlla email e password.';
+      return;
+    }
+
+    message.textContent = 'Accesso effettuato.';
+    window.location.reload();
+  } catch (e) {
+    message.textContent = 'Errore: ' + (e.message || e);
+  }
+};
+
 window.avviaRecuperoPassword = async function () {
   const message = document.getElementById('loginMessage');
   const email = document.getElementById('email').value.trim();
