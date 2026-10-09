@@ -23,7 +23,7 @@
       <button type="submit">Accedi</button>
     </form>
 
-    <button id="forgotPassword" type="button">
+    <button id="forgotPassword" type="button" onclick="window.avviaRecuperoPassword()">
       Password dimenticata?
     </button>
 
@@ -125,58 +125,40 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="admin-config.js"></script>
-<script src="admin.js?v=20261009"></script>
+<script src="admin.js?v=20261010"></script>
 <script>
-/* Fallback recupero password: funziona anche se admin.js non si è caricato correttamente. */
-(() => {
-  const btn = document.getElementById('forgotPassword');
-  const emailInput = document.getElementById('email');
+window.avviaRecuperoPassword = async function () {
   const message = document.getElementById('loginMessage');
+  const email = document.getElementById('email').value.trim();
 
-  if (!btn || !emailInput || !message) return;
+  if (!email) {
+    message.textContent = 'Inserisci prima la tua email.';
+    return;
+  }
 
-  btn.addEventListener('click', async () => {
-    if (btn.dataset.fallbackRunning === '1') return;
-    btn.dataset.fallbackRunning = '1';
+  message.textContent = 'Invio del link di recupero…';
 
-    if (typeof window.supabase === 'undefined' ||
-        !window.SUPABASE_URL ||
-        !window.SUPABASE_PUBLISHABLE_KEY) {
-      message.textContent = 'Errore: il sistema non è stato caricato correttamente. Ricarica la pagina.';
-      btn.dataset.fallbackRunning = '0';
-      return;
-    }
-
-    const email = emailInput.value.trim();
-    if (!email) {
-      message.textContent = 'Inserisci prima la tua email.';
-      btn.dataset.fallbackRunning = '0';
-      return;
-    }
-
-    message.textContent = 'Invio del link di recupero…';
-
-    const fallbackClient = window.supabase.createClient(
+  try {
+    const recoveryClient = window.supabase.createClient(
       window.SUPABASE_URL,
       window.SUPABASE_PUBLISHABLE_KEY
     );
 
-    const redirectTo =
-      window.location.origin +
-      window.location.pathname.replace(/\\/admin\\.html$/, '/reset-password.html');
+    const redirectTo = window.location.origin + '/lassu-nuovo-sito/reset-password.html';
 
-    const { error } = await fallbackClient.auth.resetPasswordForEmail(
-      email,
-      { redirectTo }
-    );
+    const result = await recoveryClient.auth.resetPasswordForEmail(email, {
+      redirectTo: redirectTo
+    });
 
-    message.textContent = error
-      ? 'Errore: ' + error.message
-      : 'Controlla la tua email: abbiamo inviato il link per reimpostare la password.';
-
-    btn.dataset.fallbackRunning = '0';
-  });
-})();
+    if (result.error) {
+      message.textContent = 'Errore: ' + result.error.message;
+    } else {
+      message.textContent = 'Controlla la tua email: abbiamo inviato il link per reimpostare la password.';
+    }
+  } catch (e) {
+    message.textContent = 'Errore: ' + (e.message || e);
+  }
+};
 </script>
 
 </body>
