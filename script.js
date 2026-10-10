@@ -12,6 +12,8 @@ document.querySelectorAll('#mainNav a').forEach(a =>
 
 const openGallery = document.querySelector('#openGallery');
 openGallery?.addEventListener('click', (event) => {
+  window.location.href = 'galleria.html';
+  return;
   event.preventDefault();
   const box = document.querySelector('#galleryPics');
   if (!box) return;
