@@ -43,3 +43,4 @@
 }
 
 .news-blink{animation:newsBlink 1s ease-in-out infinite;font-weight:800}.news.section{padding-top:24px}.news-blink{display:inline-block}@keyframes newsBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(1.08)}}
+.admin-menu-link{font-weight:700}.menu{cursor:pointer}
