@@ -116,12 +116,12 @@ async function loadGallery() {
     $('galleryMessage').textContent = 'Errore galleria: ' + error.message;
     return;
   }
-  $('adminGallery').innerHTML = data.length ? data.map(item => `
+  $('adminGallery').innerHTML = data.length ? data.map(item => { const section = (() => { try { return new URL(item.image_url).searchParams.get('section') || 'Generale'; } catch(e) { return 'Generale'; } })(); return `
     <div class="admin-gallery-item">
       <img src="${esc(item.image_url)}" alt="Foto galleria">
+      <small>${esc(section)}</small>
       <button type="button" class="delete" onclick="deleteGalleryImage('${item.id}', '${esc(item.image_url)}')">Elimina</button>
-    </div>
-  `).join('') : '<div class="empty">Nessuna foto caricata.</div>';
+    </div>`; }).join('') : '<div class="empty">Nessuna foto caricata.</div>';
 }
 
 $('uploadGallery').onclick = async () => {
@@ -142,7 +142,8 @@ $('uploadGallery').onclick = async () => {
       $('galleryMessage').textContent = 'Errore caricamento: ' + upload.error.message;
       return;
     }
-    const imageUrl = client.storage.from('gallery').getPublicUrl(path).data.publicUrl;
+    const publicUrl = client.storage.from('gallery').getPublicUrl(path).data.publicUrl;
+    const imageUrl = publicUrl + '?section=' + encodeURIComponent(section);
     const insert = await client.from('gallery').insert({ image_url: imageUrl });
     if (insert.error) {
       $('galleryMessage').textContent = 'Errore salvataggio foto: ' + insert.error.message;
