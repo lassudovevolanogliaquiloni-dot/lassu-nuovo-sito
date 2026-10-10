@@ -16,7 +16,7 @@
 .activity-content h2{color:#0767b1;margin-top:0}
 .activity-content p{color:#4c6d86;line-height:1.7}
 .activity-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
-.activity-box{background:#ffe9ed;border-radius:16px;padding:20px}
+.activity-box{display:block;background:#ffe9ed;border-radius:16px;padding:20px;text-decoration:none;color:inherit;cursor:pointer;transition:transform .18s,box-shadow .18s}.activity-box:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(7,103,177,.12)}
 .activity-box h3{color:#0767b1;margin-top:0}
 .activity-box p{font-size:14px}
 @media(max-width:700px){.activity-grid{grid-template-columns:1fr}.activity-page{padding:70px 16px 40px}}
@@ -35,9 +35,9 @@
 <h2>Le nostre attività</h2>
 <p id="activityText">Laboratori, iniziative culturali, progetti educativi e momenti di condivisione per tutte le età.</p>
 <div class="activity-grid">
-<article class="activity-box"><h3>Laboratori</h3><p>Attività creative ed educative pensate per condividere esperienze e valorizzare la fantasia.</p></article>
-<article class="activity-box"><h3>Iniziative culturali</h3><p>Progetti e appuntamenti dedicati alla cultura, alla memoria e al territorio.</p></article>
-<article class="activity-box"><h3>Momenti di condivisione</h3><p>Occasioni per stare insieme, creare relazioni e vivere la comunità.</p></article>
+<a class="activity-box" href="laboratori.html"><h3>Laboratori</h3><p>Attività creative ed educative pensate per condividere esperienze e valorizzare la fantasia.</p><b>Scopri gli eventi →</b></a>
+<a class="activity-box" href="iniziative-culturali.html"><h3>Iniziative culturali</h3><p>Progetti e appuntamenti dedicati alla cultura, alla memoria e al territorio.</p><b>Scopri gli eventi →</b></a>
+<a class="activity-box" href="momenti-condivisione.html"><h3>Momenti di condivisione</h3><p>Occasioni per stare insieme, creare relazioni e vivere la comunità.</p><b>Scopri gli eventi →</b></a>
 </div>
 </section>
 </div>
