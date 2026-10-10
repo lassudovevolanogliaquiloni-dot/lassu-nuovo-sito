@@ -82,14 +82,14 @@ async function loadSiteContent() {
     $('contentMessage').textContent = 'Errore contenuti: ' + error.message;
     return;
   }
-  $('contentTitle').value = data.title || '';
-  $('contentSubtitle').value = data.subtitle || '';
-  $('contentTagline').value = data.tagline || '';
-  $('contentChiSiamo').value = data.chi_siamo || '';
-  $('contentAttivita').value = data.attivita || '';
-  $('contentNews').value = data.news || '';
-  $('contentGalleria').value = data.galleria || '';
-  $('contentContatti').value = data.contatti || '';
+  $('contentTitle').value = data.title || 'Lassù dove Volano gli Aquiloni';
+  $('contentSubtitle').value = data.subtitle || 'Giovanni per Sempre';
+  $('contentTagline').value = data.tagline || 'Insieme per la cultura, la solidarietà e la bellezza delle piccole grandi cose.';
+  $('contentChiSiamo').value = data.chi_siamo || 'Una realtà nata dal cuore di persone che credono nei valori della solidarietà, della cultura e del territorio.';
+  $('contentAttivita').value = data.attivita || 'Laboratori, iniziative culturali, progetti educativi e momenti di condivisione per tutte le età.';
+  $('contentNews').value = data.news || 'News, aggiornamenti e nuove iniziative dell’Associazione.';
+  $('contentGalleria').value = data.galleria || 'Scatti, emozioni e sorrisi delle nostre attività e dei nostri eventi.';
+  $('contentContatti').value = data.contatti || 'Per informazioni, collaborazioni o per proporre nuove idee, puoi contattarci via email o seguirci sui nostri social.';
 }
 
 $('siteContentForm').addEventListener('submit', async e => {
