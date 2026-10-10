@@ -23,6 +23,8 @@ function showApp(email) {
   $('app').classList.remove('hidden');
   $('userEmail').textContent = email ? ' · ' + email : '';
   loadEvents();
+  loadSiteContent();
+  loadGallery();
 }
 
 function showLogin() {
@@ -73,6 +75,98 @@ async function loadEvents() {
     `).join('')
     : '<div class="empty">Nessun evento.</div>';
 }
+
+async function loadSiteContent() {
+  const { data, error } = await client.from('site_content').select('*').eq('id', 1).single();
+  if (error) {
+    $('contentMessage').textContent = 'Errore contenuti: ' + error.message;
+    return;
+  }
+  $('contentTitle').value = data.title || '';
+  $('contentSubtitle').value = data.subtitle || '';
+  $('contentTagline').value = data.tagline || '';
+  $('contentChiSiamo').value = data.chi_siamo || '';
+  $('contentAttivita').value = data.attivita || '';
+  $('contentNews').value = data.news || '';
+  $('contentGalleria').value = data.galleria || '';
+  $('contentContatti').value = data.contatti || '';
+}
+
+$('siteContentForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  $('contentMessage').textContent = 'Salvataggio…';
+  const payload = {
+    title: $('contentTitle').value.trim(),
+    subtitle: $('contentSubtitle').value.trim(),
+    tagline: $('contentTagline').value.trim(),
+    chi_siamo: $('contentChiSiamo').value.trim(),
+    attivita: $('contentAttivita').value.trim(),
+    news: $('contentNews').value.trim(),
+    galleria: $('contentGalleria').value.trim(),
+    contatti: $('contentContatti').value.trim(),
+    updated_at: new Date().toISOString()
+  };
+  const { error } = await client.from('site_content').update(payload).eq('id', 1);
+  $('contentMessage').textContent = error ? 'Errore: ' + error.message : 'Contenuti salvati.';
+});
+
+async function loadGallery() {
+  const { data, error } = await client.from('gallery').select('*').order('created_at', { ascending: false });
+  if (error) {
+    $('galleryMessage').textContent = 'Errore galleria: ' + error.message;
+    return;
+  }
+  $('adminGallery').innerHTML = data.length ? data.map(item => `
+    <div class="admin-gallery-item">
+      <img src="${esc(item.image_url)}" alt="Foto galleria">
+      <button type="button" class="delete" onclick="deleteGalleryImage('${item.id}', '${esc(item.image_url)}')">Elimina</button>
+    </div>
+  `).join('') : '<div class="empty">Nessuna foto caricata.</div>';
+}
+
+$('uploadGallery').onclick = async () => {
+  const files = Array.from($('galleryFiles').files || []);
+  if (!files.length) {
+    $('galleryMessage').textContent = 'Seleziona almeno una foto.';
+    return;
+  }
+  $('galleryMessage').textContent = 'Caricamento foto…';
+  for (const file of files) {
+    if (!file.type.startsWith('image/')) continue;
+    const extension = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const path = 'gallery/' + (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())) + '.' + extension;
+    const upload = await client.storage.from('gallery').upload(path, file, { cacheControl: '31536000', upsert: false });
+    if (upload.error) {
+      $('galleryMessage').textContent = 'Errore caricamento: ' + upload.error.message;
+      return;
+    }
+    const imageUrl = client.storage.from('gallery').getPublicUrl(path).data.publicUrl;
+    const insert = await client.from('gallery').insert({ image_url: imageUrl });
+    if (insert.error) {
+      $('galleryMessage').textContent = 'Errore salvataggio foto: ' + insert.error.message;
+      return;
+    }
+  }
+  $('galleryFiles').value = '';
+  $('galleryMessage').textContent = 'Foto caricate.';
+  loadGallery();
+};
+
+window.deleteGalleryImage = async (id, imageUrl) => {
+  if (!confirm('Eliminare questa foto dalla galleria?')) return;
+  const marker = '/gallery/';
+  const index = imageUrl.indexOf(marker);
+  if (index >= 0) {
+    const path = imageUrl.substring(index + marker.length).split('?')[0];
+    await client.storage.from('gallery').remove([path]);
+  }
+  const { error } = await client.from('gallery').delete().eq('id', id);
+  if (error) {
+    $('galleryMessage').textContent = 'Errore: ' + error.message;
+    return;
+  }
+  loadGallery();
+};
 
 window.editEvent = async id => {
   const { data, error } = await client
