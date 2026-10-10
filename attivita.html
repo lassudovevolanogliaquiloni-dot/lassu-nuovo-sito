@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Le nostre attività — Lassù dove Volano gli Aquiloni</title>
+<link rel="stylesheet" href="style.css?v=20261010i">
+<style>
+.activity-page{min-height:100vh;background:#ffe9ed;padding:90px 24px 60px}
+.activity-wrap{width:min(1000px,100%);margin:auto}
+.activity-header{text-align:center;background:#fff;border-radius:22px;padding:30px;box-shadow:0 5px 18px rgba(7,103,177,.1);margin-bottom:24px}
+.activity-header h1{color:#0767b1;font-size:34px;margin:12px 0}
+.activity-header p{color:#4c6d86;line-height:1.6}
+.activity-back{display:inline-block;background:#f04b4d;color:#fff;border-radius:22px;padding:10px 18px;font-weight:700;text-decoration:none;font-size:12px}
+.activity-content{background:#fff;border-radius:22px;padding:30px;box-shadow:0 5px 18px rgba(7,103,177,.1)}
+.activity-content h2{color:#0767b1;margin-top:0}
+.activity-content p{color:#4c6d86;line-height:1.7}
+.activity-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.activity-box{background:#ffe9ed;border-radius:16px;padding:20px}
+.activity-box h3{color:#0767b1;margin-top:0}
+.activity-box p{font-size:14px}
+@media(max-width:700px){.activity-grid{grid-template-columns:1fr}.activity-page{padding:70px 16px 40px}}
+</style>
+</head>
+<body>
+<main class="activity-page">
+<div class="activity-wrap">
+<header class="activity-header">
+<div class="round-icon red" style="margin:auto">✎</div>
+<h1>Le nostre attività</h1>
+<p>Scopri le attività, i laboratori e i progetti dell'Associazione.</p>
+<a class="activity-back" href="./">← Torna al sito</a>
+</header>
+<section class="activity-content">
+<h2>Le nostre attività</h2>
+<p id="activityText">Laboratori, iniziative culturali, progetti educativi e momenti di condivisione per tutte le età.</p>
+<div class="activity-grid">
+<article class="activity-box"><h3>Laboratori</h3><p>Attività creative ed educative pensate per condividere esperienze e valorizzare la fantasia.</p></article>
+<article class="activity-box"><h3>Iniziative culturali</h3><p>Progetti e appuntamenti dedicati alla cultura, alla memoria e al territorio.</p></article>
+<article class="activity-box"><h3>Momenti di condivisione</h3><p>Occasioni per stare insieme, creare relazioni e vivere la comunità.</p></article>
+</div>
+</section>
+</div>
+</main>
+<script>
+const U='https://chvwxkuawstogkkxoplm.supabase.co',K='sb_publishable_OoJE9LWhmmXp7Ecs5o_NBA_jmrA9d2N';
+(async()=>{try{const r=await fetch(U+'/rest/v1/site_content?select=attivita&id=eq.1',{headers:{apikey:K,Authorization:'Bearer '+K},cache:'no-store'}),d=await r.json();if(d[0]?.attivita)document.querySelector('#activityText').textContent=d[0].attivita}catch(e){}})();
+</script>
+</body>
+</html>
