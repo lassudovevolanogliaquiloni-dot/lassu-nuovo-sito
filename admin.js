@@ -5,6 +5,7 @@ const client = supabase.createClient(
 
 const $ = id => document.getElementById(id);
 let editingId = null;
+let currentPosterUrl = null;
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, m => ({
@@ -57,6 +58,7 @@ async function loadEvents() {
             ${e.published ? '' : ' · NON PUBBLICATO'}
           </p>
           <p>${esc(e.description || '')}</p>
+          ${e.poster_url ? '<img class="admin-poster-thumb" src="' + esc(e.poster_url) + '" alt="Locandina">' : ''}
         </div>
 
         <button onclick="editEvent('${e.id}')">
@@ -92,6 +94,11 @@ window.editEvent = async id => {
   $('place').value = data.place || '';
   $('description').value = data.description || '';
   $('published').checked = !!data.published;
+  $('poster').value = '';
+  currentPosterUrl = data.poster_url || null;
+  $('currentPoster').innerHTML = currentPosterUrl
+    ? '<p>Locandina attuale:</p><img class="current-poster" src="' + esc(currentPosterUrl) + '" alt="Locandina attuale">'
+    : '';
   $('formMessage').textContent = '';
 
   $('modal').classList.remove('hidden');
@@ -119,6 +126,9 @@ $('newEvent').onclick = () => {
   $('modalTitle').textContent = 'Nuovo evento';
   $('eventForm').reset();
   $('published').checked = true;
+  $('poster').value = '';
+  currentPosterUrl = null;
+  $('currentPoster').innerHTML = '';
   $('formMessage').textContent = '';
 
   $('modal').classList.remove('hidden');
@@ -132,25 +142,50 @@ $('cancel').onclick = () => {
 $('eventForm').addEventListener('submit', async e => {
   e.preventDefault();
 
+  const file = $('poster').files[0];
+
+  $('formMessage').textContent = file ? 'Caricamento della locandina…' : 'Salvataggio…';
+
+  let posterUrl = currentPosterUrl;
+
+  if (file) {
+    if (!file.type.startsWith('image/')) {
+      $('formMessage').textContent = 'Errore: seleziona un file immagine.';
+      return;
+    }
+
+    const extension = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const fileName = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())) + '.' + extension;
+    const filePath = 'events/' + fileName;
+
+    const upload = await client.storage.from('event-posters').upload(filePath, file, {
+      cacheControl: '31536000',
+      upsert: false
+    });
+
+    if (upload.error) {
+      $('formMessage').textContent = 'Errore caricamento locandina: ' + upload.error.message;
+      return;
+    }
+
+    posterUrl = client.storage.from('event-posters').getPublicUrl(filePath).data.publicUrl;
+  }
+
   const payload = {
     title: $('title').value.trim(),
     event_date: $('date').value || null,
     place: $('place').value.trim() || null,
     description: $('description').value.trim() || null,
-    published: $('published').checked
+    published: $('published').checked,
+    poster_url: posterUrl || null
   };
 
   let result;
 
   if (editingId) {
-    result = await client
-      .from('events')
-      .update(payload)
-      .eq('id', editingId);
+    result = await client.from('events').update(payload).eq('id', editingId);
   } else {
-    result = await client
-      .from('events')
-      .insert(payload);
+    result = await client.from('events').insert(payload);
   }
 
   if (result.error) {
