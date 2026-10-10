@@ -62,15 +62,21 @@ function formatDate(s) {
 
     if (list) {
       const response = await fetch(
-        SUPABASE_URL +
-        '/rest/v1/events?select=*&published=eq.true&order=event_date.asc',
+        SUPABASE_URL + '/rest/v1/events?select=*&published=eq.true&order=event_date.asc',
         {
+          method: 'GET',
           headers: {
             apikey: SUPABASE_KEY,
-            Authorization: 'Bearer ' + SUPABASE_KEY
-          }
+            Authorization: 'Bearer ' + SUPABASE_KEY,
+            Accept: 'application/json'
+          },
+          cache: 'no-store'
         }
       );
+
+      if (!response.ok) {
+        throw new Error('Supabase HTTP ' + response.status + ': ' + await response.text());
+      }
 
       const events = await response.json();
 
