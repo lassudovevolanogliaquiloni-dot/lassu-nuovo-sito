@@ -130,11 +130,13 @@ $('uploadGallery').onclick = async () => {
     $('galleryMessage').textContent = 'Seleziona almeno una foto.';
     return;
   }
+  const section = ($('gallerySection')?.value || '').trim() || 'Generale';
+  const slug = section.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'generale';
   $('galleryMessage').textContent = 'Caricamento foto…';
   for (const file of files) {
     if (!file.type.startsWith('image/')) continue;
     const extension = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
-    const path = 'gallery/' + (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())) + '.' + extension;
+    const path = 'gallery/' + slug + '/' + (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())) + '.' + extension;
     const upload = await client.storage.from('gallery').upload(path, file, { cacheControl: '31536000', upsert: false });
     if (upload.error) {
       $('galleryMessage').textContent = 'Errore caricamento: ' + upload.error.message;
@@ -148,7 +150,8 @@ $('uploadGallery').onclick = async () => {
     }
   }
   $('galleryFiles').value = '';
-  $('galleryMessage').textContent = 'Foto caricate.';
+  if ($('gallerySection')) $('gallerySection').value = '';
+  $('galleryMessage').textContent = 'Foto caricate nella sezione “' + section + '”.';
   loadGallery();
 };
 
