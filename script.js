@@ -43,6 +43,21 @@ function formatDate(s) {
 
     const list = document.querySelector('#eventList');
     if (list) {
+      list.addEventListener('click', (event) => {
+        const link = event.target.closest('.event-poster-link');
+        if (!link) return;
+        event.preventDefault();
+        const src = link.href;
+        const overlay = document.createElement('div');
+        overlay.className = 'poster-lightbox';
+        overlay.innerHTML = '<button class="poster-lightbox-close" aria-label="Chiudi">×</button><img src="' + esc(src) + '" alt="' + esc(link.querySelector('img')?.alt || 'Locandina') + '">';
+        document.body.appendChild(overlay);
+        document.body.style.overflow = 'hidden';
+        const close = () => { overlay.remove(); document.body.style.overflow = ''; };
+        overlay.addEventListener('click', (e) => { if (e.target === overlay || e.target.classList.contains('poster-lightbox-close')) close(); });
+        document.addEventListener('keydown', function onKey(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onKey); } });
+      });
+
       const response = await fetch(
         SUPABASE_URL + '/rest/v1/events?select=*&published=eq.true&order=event_date.asc',
         {
