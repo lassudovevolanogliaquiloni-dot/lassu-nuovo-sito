@@ -24,6 +24,13 @@ function formatDate(s) {
     return new Date(s + 'T00:00:00').toLocaleDateString('it-IT', {
       day: '2-digit', month: 'long', year: 'numeric'
     });
+      const list = document.querySelector("#eventList");
+      if (list) {
+        const response = await fetch(SUPABASE_URL + "/rest/v1/events?select=*&published=eq.true&order=event_date.asc", { headers:{ apikey:SUPABASE_KEY, Authorization:"Bearer "+SUPABASE_KEY, Accept:"application/json" }, cache:"no-store" });
+        if (!response.ok) throw new Error("Supabase HTTP " + response.status);
+        const events = await response.json();
+        if (Array.isArray(events) && events.length) list.innerHTML = events.slice(0,3).map(e => "<article>" + (e.poster_url ? "<a class=\"event-poster-link\" href=\""+esc(e.poster_url)+"\" target=\"_blank\" rel=\"noopener\"><img class=\"event-poster\" src=\""+esc(e.poster_url)+"\" alt=\"Locandina di "+esc(e.title)+"\" loading=\"lazy\"></a>" : "") + "<h3>"+esc(e.title)+"</h3>" + (e.event_date ? "<p><strong>"+formatDate(e.event_date)+"</strong>"+(e.place ? " · "+esc(e.place) : "")+"</p>" : "") + "<p>"+esc(e.description || "")+"</p></article>").join("");
+      }
   } catch (e) { return s; }
 }
 
