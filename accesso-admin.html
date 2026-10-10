@@ -63,6 +63,61 @@
     <section class="panel">
       <div class="panel-title">
         <div>
+          <h2>Contenuti del sito</h2>
+          <p class="hint">Modifica i testi principali della home page.</p>
+        </div>
+      </div>
+
+      <form id="siteContentForm" class="content-form">
+        <label>Titolo principale
+          <input id="contentTitle">
+        </label>
+        <label>Sottotitolo
+          <input id="contentSubtitle">
+        </label>
+        <label>Frase introduttiva
+          <textarea id="contentTagline" rows="3"></textarea>
+        </label>
+        <label>Chi siamo
+          <textarea id="contentChiSiamo" rows="4"></textarea>
+        </label>
+        <label>Le nostre attività
+          <textarea id="contentAttivita" rows="4"></textarea>
+        </label>
+        <label>News
+          <textarea id="contentNews" rows="4"></textarea>
+        </label>
+        <label>Galleria fotografica
+          <textarea id="contentGalleria" rows="4"></textarea>
+        </label>
+        <label>Contatti
+          <textarea id="contentContatti" rows="4"></textarea>
+        </label>
+        <button type="submit" class="add">Salva contenuti</button>
+        <p id="contentMessage" class="hint"></p>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">
+        <div>
+          <h2>Galleria fotografica</h2>
+          <p class="hint">Da smartphone puoi scegliere una o più foto dalla galleria del telefono.</p>
+        </div>
+      </div>
+      <label class="gallery-upload">
+        Seleziona foto
+        <input id="galleryFiles" type="file" accept="image/*" multiple>
+        <small>Puoi selezionare più immagini insieme.</small>
+      </label>
+      <button id="uploadGallery" class="add" type="button">Carica foto</button>
+      <p id="galleryMessage" class="hint"></p>
+      <div id="adminGallery" class="admin-gallery"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">
+        <div>
           <h2>Eventi</h2>
           <p class="hint">
             Aggiungi, modifica o elimina gli appuntamenti del sito.
@@ -132,7 +187,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="admin-config.js"></script>
-<script src="admin.js?v=20261010a"></script>
+<script src="admin.js?v=20261010b"></script>
 
 
 <!-- deployment refresh 2026-10-09 -->
