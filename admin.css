@@ -3,3 +3,5 @@
 
 /* Locandine eventi */
 #eventForm small{display:block;margin-top:6px;color:#667085;font-size:12px}.current-poster{display:block;max-width:180px;max-height:220px;margin-top:8px;border-radius:8px;object-fit:cover}.admin-poster-thumb{display:block;width:70px;height:90px;object-fit:cover;border-radius:8px;margin-top:8px}
+
+.content-form{display:grid;gap:12px}.content-form label,.gallery-upload{font-weight:700;font-size:13px}.content-form input,.content-form textarea,.gallery-upload input{width:100%;margin-top:5px;padding:12px;border:1px solid #b7d6e8;border-radius:9px;font:inherit}.gallery-upload{display:block}.gallery-upload small{display:block;margin-top:5px;color:#667085;font-weight:400}.admin-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}.admin-gallery-item{background:#f4f9fc;padding:8px;border-radius:10px}.admin-gallery-item img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:7px;display:block;margin-bottom:7px}.admin-gallery-item button{width:100%}@media(max-width:650px){.admin-gallery{grid-template-columns:repeat(2,1fr)}.content-form input,.content-form textarea{font-size:16px}}
