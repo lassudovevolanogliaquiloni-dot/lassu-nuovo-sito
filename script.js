@@ -27,20 +27,59 @@ function formatDate(s) {
   } catch (e) { return s; }
 }
 
+async function loadSiteContentPublic() {
+  const response = await fetch(
+    SUPABASE_URL + '/rest/v1/site_content?select=*&id=eq.1',
+    { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }, cache: 'no-store' }
+  );
+  if (!response.ok) throw new Error('site_content HTTP ' + response.status);
+  const rows = await response.json();
+  const data = rows[0];
+  if (!data) return;
+  const setText = (id, value) => { const el = document.getElementById(id); if (el && value) el.textContent = value; };
+  const title = document.querySelector('#siteTitle');
+  if (title && data.title) title.innerHTML = '“' + esc(data.title).replace(/\n/g, '<br>') + '”';
+  setText('siteSubtitle', data.subtitle);
+  setText('siteTagline', data.tagline);
+  setText('cardChiSiamo', data.chi_siamo);
+  setText('cardAttivita', data.attivita);
+  setText('siteNews', data.news);
+  setText('siteGalleria', data.galleria);
+  setText('siteContatti', data.contatti);
+}
+
+async function loadGalleryPublic() {
+  const response = await fetch(
+    SUPABASE_URL + '/rest/v1/gallery?select=*&order=created_at.desc',
+    { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }, cache: 'no-store' }
+  );
+  if (!response.ok) throw new Error('gallery HTTP ' + response.status);
+  const photos = await response.json();
+  const box = document.querySelector('#galleryPics');
+  if (!box) return;
+  if (!photos.length) return;
+  box.innerHTML = photos.map((p, i) =>
+    '<a class="realphoto dynamic-photo" href="' + esc(p.image_url) + '" target="_blank" rel="noopener" aria-label="Apri foto della galleria"><img src="' + esc(p.image_url) + '" alt="Foto della galleria" loading="lazy"></a>'
+  ).join('');
+  box.addEventListener('click', event => {
+    const link = event.target.closest('.dynamic-photo');
+    if (!link) return;
+    event.preventDefault();
+    const overlay = document.createElement('div');
+    overlay.className = 'poster-lightbox';
+    overlay.innerHTML = '<button class="poster-lightbox-close" aria-label="Chiudi">×</button><img src="' + esc(link.href) + '" alt="Foto della galleria">';
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+    const close = () => { overlay.remove(); document.body.style.overflow = ''; };
+    overlay.addEventListener('click', e => { if (e.target === overlay || e.target.classList.contains('poster-lightbox-close')) close(); });
+    document.addEventListener('keydown', function onKey(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onKey); } });
+  });
+}
+
 (async () => {
   try {
-    const r = await fetch('content.json?' + Date.now());
-    const data = await r.json();
-
-    if (data.site) {
-      const title = document.querySelector('#siteTitle');
-      const subtitle = document.querySelector('#siteSubtitle');
-      const tagline = document.querySelector('#siteTagline');
-      if (title && data.site.title) title.innerHTML = '“' + data.site.title.replace(/\n/g, '<br>') + '”';
-      if (subtitle && data.site.subtitle) subtitle.textContent = data.site.subtitle;
-      if (tagline && data.site.tagline) tagline.textContent = data.site.tagline;
-    }
-
+    await loadSiteContentPublic();
+    await loadGalleryPublic();
     const list = document.querySelector('#eventList');
     if (list) {
       list.addEventListener('click', (event) => {
@@ -60,41 +99,19 @@ function formatDate(s) {
 
       const response = await fetch(
         SUPABASE_URL + '/rest/v1/events?select=*&published=eq.true&order=event_date.asc',
-        {
-          method: 'GET',
-          headers: {
-            apikey: SUPABASE_KEY,
-            Authorization: 'Bearer ' + SUPABASE_KEY,
-            Accept: 'application/json'
-          },
-          cache: 'no-store'
-        }
+        { method:'GET', headers:{ apikey:SUPABASE_KEY, Authorization:'Bearer '+SUPABASE_KEY, Accept:'application/json' }, cache:'no-store' }
       );
-
-      if (!response.ok) {
-        throw new Error('Supabase HTTP ' + response.status + ': ' + await response.text());
-      }
-
+      if (!response.ok) throw new Error('Supabase HTTP ' + response.status + ': ' + await response.text());
       const events = await response.json();
-
       if (Array.isArray(events) && events.length) {
         list.innerHTML = events.map(e =>
           '<article>' +
-            (e.poster_url
-              ? '<a class="event-poster-link" href="' + esc(e.poster_url) + '" target="_blank" rel="noopener" aria-label="Apri la locandina di ' + esc(e.title) + '"><img class="event-poster" src="' + esc(e.poster_url) + '" alt="Locandina di ' + esc(e.title) + '" loading="lazy"></a>'
-              : '') +
-            '<h3>' + esc(e.title) + '</h3>' +
-            (e.event_date
-              ? '<p><strong>' + formatDate(e.event_date) + '</strong>' +
-                (e.place ? ' · ' + esc(e.place) : '') +
-                '</p>'
-              : '') +
-            '<p>' + esc(e.description || '') + '</p>' +
-          '</article>'
+          (e.poster_url ? '<a class="event-poster-link" href="' + esc(e.poster_url) + '" target="_blank" rel="noopener" aria-label="Apri la locandina di ' + esc(e.title) + '"><img class="event-poster" src="' + esc(e.poster_url) + '" alt="Locandina di ' + esc(e.title) + '" loading="lazy"></a>' : '') +
+          '<h3>' + esc(e.title) + '</h3>' +
+          (e.event_date ? '<p><strong>' + formatDate(e.event_date) + '</strong>' + (e.place ? ' · ' + esc(e.place) : '') + '</p>' : '') +
+          '<p>' + esc(e.description || '') + '</p></article>'
         ).join('');
       }
     }
-  } catch (e) {
-    console.error('Errore caricamento contenuti:', e);
-  }
+  } catch (e) { console.error('Errore caricamento contenuti:', e); }
 })();
