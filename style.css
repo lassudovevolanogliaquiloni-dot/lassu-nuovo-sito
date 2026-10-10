@@ -21,3 +21,23 @@
 .event-list article .event-poster{display:block;width:100%;height:auto;max-width:100%;max-height:none;object-fit:contain;border-radius:9px;margin:0 0 12px;cursor:zoom-in}
 
 .event-poster-link{display:block;line-height:0;width:100%;}.event-poster-link:focus{outline:2px solid #0878c8;outline-offset:2px;}
+
+/* Evento in evidenza: un solo evento, grande e leggibile */
+.events .event-list{grid-template-columns:1fr;max-width:100%;gap:18px}
+.events .event-list article{width:100%;padding:22px;border-radius:16px}
+.events .event-list article .event-poster{width:100%;height:auto;max-width:100%;max-height:none;object-fit:contain;border-radius:12px;margin:0 0 18px}
+.events .event-list article h3{font-size:22px;margin:12px 0 8px}
+.events .event-list article p{font-size:14px;line-height:1.55}
+.events .event-list article .event-poster-link{display:block;width:100%;line-height:0}
+.poster-lightbox{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:18px}
+.poster-lightbox img{display:block;max-width:96vw;max-height:94vh;width:auto;height:auto;object-fit:contain;border-radius:8px}
+.poster-lightbox-close{position:absolute;top:12px;right:14px;width:44px;height:44px;border:0;border-radius:50%;background:#fff;color:#075eaa;font-size:32px;line-height:1;cursor:pointer;z-index:2}
+@media(max-width:800px){
+  .events{padding:28px 16px}
+  .events .event-list article{padding:14px;border-radius:14px}
+  .events .event-list article .event-poster{border-radius:10px;margin-bottom:14px}
+  .events .event-list article h3{font-size:20px}
+  .events .event-list article p{font-size:13px}
+  .poster-lightbox{padding:10px}
+  .poster-lightbox img{max-width:98vw;max-height:90vh}
+}
