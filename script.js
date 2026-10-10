@@ -66,7 +66,7 @@ function formatDate(s) {
         list.innerHTML = events.map(e =>
           '<article>' +
             (e.poster_url
-              ? '<img class="event-poster" src="' + esc(e.poster_url) + '" alt="Locandina di ' + esc(e.title) + '" loading="lazy">'
+              ? '<a class="event-poster-link" href="' + esc(e.poster_url) + '" target="_blank" rel="noopener" aria-label="Apri la locandina di ' + esc(e.title) + '"><img class="event-poster" src="' + esc(e.poster_url) + '" alt="Locandina di ' + esc(e.title) + '" loading="lazy"></a>'
               : '') +
             '<h3>' + esc(e.title) + '</h3>' +
             (e.event_date
