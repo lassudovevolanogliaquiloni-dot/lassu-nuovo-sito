@@ -28,6 +28,26 @@ function formatDate(s) {
   } catch (e) { return s; }
 }
 
+async function loadFeaturedEvents() {
+  const box = document.querySelector('#featuredEventList');
+  if (!box) return;
+  const response = await fetch(
+    SUPABASE_URL + '/rest/v1/events?select=*&published=eq.true&order=event_date.asc&limit=3',
+    { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }, cache: 'no-store' }
+  );
+  if (!response.ok) throw new Error('events HTTP ' + response.status);
+  const events = await response.json();
+  if (!events.length) {
+    box.innerHTML = '<article class="empty-events"><h3>In evidenza</h3><p>Gli eventi pubblicati dall’area amministratore appariranno qui.</p></article>';
+    return;
+  }
+  box.innerHTML = events.map(e => {
+    const date = e.event_date ? new Date(e.event_date + 'T00:00:00').toLocaleDateString('it-IT', {day:'2-digit', month:'long', year:'numeric'}) : 'Data da definire';
+    const poster = e.poster_url ? '<img src="' + esc(e.poster_url) + '" alt="Locandina ' + esc(e.title) + '">' : '';
+    return '<article class="event-card"><div class="event-poster-wrap">' + poster + '</div><div class="event-info"><div class="event-meta">' + esc(date) + (e.place ? ' · ' + esc(e.place) : '') + '</div><h3>' + esc(e.title) + '</h3><p>' + esc(e.description || '') + '</p></div></article>';
+  }).join('');
+}
+
 async function loadSiteContentPublic() {
   const response = await fetch(
     SUPABASE_URL + '/rest/v1/site_content?select=*&id=eq.1',
@@ -81,5 +101,6 @@ async function loadGalleryPublic() {
   try {
     await loadSiteContentPublic();
     await loadGalleryPublic();
+    await loadFeaturedEvents();
   } catch (e) { console.error('Errore caricamento contenuti:', e); }
 })();
