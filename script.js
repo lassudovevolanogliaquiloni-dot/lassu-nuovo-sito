@@ -20,7 +20,7 @@ function esc(s) {
     '>': '&gt;',
     '"': '&quot;',
     "'": '&#039;'
-  }[m]);
+  }[m]));
 }
 
 function formatDate(s) {
