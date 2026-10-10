@@ -15,24 +15,16 @@ const SUPABASE_KEY = 'sb_publishable_OoJE9LWhmmXp7Ecs5o_NBA_jmrA9d2N';
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, m => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;'
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
   }[m]));
 }
 
 function formatDate(s) {
   try {
     return new Date(s + 'T00:00:00').toLocaleDateString('it-IT', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric'
+      day: '2-digit', month: 'long', year: 'numeric'
     });
-  } catch (e) {
-    return s;
-  }
+  } catch (e) { return s; }
 }
 
 (async () => {
@@ -44,22 +36,12 @@ function formatDate(s) {
       const title = document.querySelector('#siteTitle');
       const subtitle = document.querySelector('#siteSubtitle');
       const tagline = document.querySelector('#siteTagline');
-
-      if (title && data.site.title) {
-        title.innerHTML = '“' + data.site.title.replace(/\n/g, '<br>') + '”';
-      }
-
-      if (subtitle && data.site.subtitle) {
-        subtitle.textContent = data.site.subtitle;
-      }
-
-      if (tagline && data.site.tagline) {
-        tagline.textContent = data.site.tagline;
-      }
+      if (title && data.site.title) title.innerHTML = '“' + data.site.title.replace(/\n/g, '<br>') + '”';
+      if (subtitle && data.site.subtitle) subtitle.textContent = data.site.subtitle;
+      if (tagline && data.site.tagline) tagline.textContent = data.site.tagline;
     }
 
     const list = document.querySelector('#eventList');
-
     if (list) {
       const response = await fetch(
         SUPABASE_URL + '/rest/v1/events?select=*&published=eq.true&order=event_date.asc',
@@ -86,7 +68,7 @@ function formatDate(s) {
             (e.poster_url
               ? '<img class="event-poster" src="' + esc(e.poster_url) + '" alt="Locandina di ' + esc(e.title) + '" loading="lazy">'
               : '') +
-            '<h3>' + esc(e.title) + '</h3>'
+            '<h3>' + esc(e.title) + '</h3>' +
             (e.event_date
               ? '<p><strong>' + formatDate(e.event_date) + '</strong>' +
                 (e.place ? ' · ' + esc(e.place) : '') +
