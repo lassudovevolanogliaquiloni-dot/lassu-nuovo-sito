@@ -19,3 +19,5 @@
 
 /* Locandine eventi */
 .event-list article .event-poster{display:block;width:100%;height:auto;max-width:100%;max-height:none;object-fit:contain;border-radius:9px;margin:0 0 12px;cursor:zoom-in}
+
+.event-poster-link{display:block;line-height:0;width:100%;}.event-poster-link:focus{outline:2px solid #0878c8;outline-offset:2px;}
