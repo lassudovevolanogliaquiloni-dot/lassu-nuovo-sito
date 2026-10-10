@@ -10,17 +10,6 @@ document.querySelectorAll('#mainNav a').forEach(a =>
   a.addEventListener('click', () => nav.classList.remove('open'))
 );
 
-const openGallery = document.querySelector('#openGallery');
-openGallery?.addEventListener('click', (event) => {
-  window.location.href = 'galleria.html';
-  return;
-  event.preventDefault();
-  const box = document.querySelector('#galleryPics');
-  if (!box) return;
-  box.classList.remove('gallery-hidden');
-  setTimeout(() => box.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
-});
-
 const SUPABASE_URL = 'https://chvwxkuawstogkkxoplm.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_OoJE9LWhmmXp7Ecs5o_NBA_jmrA9d2N';
 
