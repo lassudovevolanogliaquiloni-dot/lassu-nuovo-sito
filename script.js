@@ -83,7 +83,10 @@ function formatDate(s) {
       if (Array.isArray(events) && events.length) {
         list.innerHTML = events.map(e =>
           '<article>' +
-            '<h3>' + esc(e.title) + '</h3>' +
+            (e.poster_url
+              ? '<img class="event-poster" src="' + esc(e.poster_url) + '" alt="Locandina di ' + esc(e.title) + '" loading="lazy">'
+              : '') +
+            '<h3>' + esc(e.title) + '</h3>'
             (e.event_date
               ? '<p><strong>' + formatDate(e.event_date) + '</strong>' +
                 (e.place ? ' · ' + esc(e.place) : '') +
