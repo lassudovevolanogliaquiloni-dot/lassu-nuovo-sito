@@ -10,12 +10,21 @@ document.querySelectorAll('#mainNav a').forEach(a =>
   a.addEventListener('click', () => nav.classList.remove('open'))
 );
 
+const openGallery = document.querySelector('#openGallery');
+openGallery?.addEventListener('click', (event) => {
+  event.preventDefault();
+  const box = document.querySelector('#galleryPics');
+  if (!box) return;
+  box.classList.remove('gallery-hidden');
+  setTimeout(() => box.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+});
+
 const SUPABASE_URL = 'https://chvwxkuawstogkkxoplm.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_OoJE9LWhmmXp7Ecs5o_NBA_jmrA9d2N';
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, m => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'
   }[m]));
 }
 
@@ -58,7 +67,7 @@ async function loadGalleryPublic() {
   const box = document.querySelector('#galleryPics');
   if (!box) return;
   if (!photos.length) return;
-  box.innerHTML = photos.map((p, i) =>
+  box.innerHTML = photos.map(p =>
     '<a class="realphoto dynamic-photo" href="' + esc(p.image_url) + '" target="_blank" rel="noopener" aria-label="Apri foto della galleria"><img src="' + esc(p.image_url) + '" alt="Foto della galleria" loading="lazy"></a>'
   ).join('');
   box.addEventListener('click', event => {
