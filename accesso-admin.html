@@ -124,6 +124,14 @@
 
     <section class="panel">
       <div class="panel-title">
+        <div><h2>Attività</h2><p class="hint">Archivio separato per Laboratori, Iniziative culturali e Momenti di condivisione.</p></div>
+        <button id="newActivityEvent" class="add">+ Nuova attività</button>
+      </div>
+      <div id="activityEventsList"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">
         <div><h2>Eventi</h2><p class="hint">Questi eventi vengono pubblicati solo nella pagina Eventi.</p></div>
         <button id="newEvent" class="add">+ Nuovo evento</button>
       </div>
@@ -146,6 +154,15 @@
     <h2 id="modalTitle">Nuovo evento</h2>
 
     <form id="eventForm">
+      <label id="activityCategoryWrap" style="display:none">
+        Sezione attività
+        <select id="activityCategory">
+          <option value="laboratori">Laboratori</option>
+          <option value="iniziative-culturali">Iniziative culturali</option>
+          <option value="momenti-condivisione">Momenti di condivisione</option>
+        </select>
+      </label>
+
       <label>
         Titolo
         <input id="title" required>
