@@ -40,7 +40,7 @@ async function loadFeaturedEvents() { await loadEventCollection('featured_events
 async function loadEventCollection(table, targetId) {
   const target = $(targetId);
   if (!target) return;
-  const { data, error } = await client.from(table).select('*').order('event_date', { ascending: true });
+  const { data, error } = await client.from(table).select('*').order('event_date', { ascending: false });
   if (error) { target.innerHTML = '<div class="empty">Errore nel caricamento: ' + esc(error.message) + '</div>'; return; }
   target.innerHTML = data.length ? data.map(e => `
     <div class="item"><div><h3>${esc(e.title)}</h3><p>${esc(e.event_date || '')}${e.place ? ' · ' + esc(e.place) : ''}${e.published ? '' : ' · NON PUBBLICATO'}</p><p>${esc(e.description || '')}</p>${e.poster_url ? '<img class="admin-poster-thumb" src="' + esc(e.poster_url) + '" alt="Locandina">' : ''}${e.pdf_url ? '<p><a href="' + esc(e.pdf_url) + '" target="_blank" rel="noopener">📄 Apri PDF</a></p>' : ''}</div>
