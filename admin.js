@@ -6,6 +6,7 @@ const client = supabase.createClient(
 const $ = id => document.getElementById(id);
 let editingId = null;
 let currentPosterUrl = null;
+let activeCollection = 'events';
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, m => ({
@@ -23,6 +24,7 @@ function showApp(email) {
   $('app').classList.remove('hidden');
   $('userEmail').textContent = email ? ' · ' + email : '';
   loadEvents();
+  loadFeaturedEvents();
   loadSiteContent();
   loadGallery();
 }
@@ -33,47 +35,17 @@ function showLogin() {
   $('login').classList.remove('hidden');
 }
 
-async function loadEvents() {
-  const { data, error } = await client
-    .from('events')
-    .select('*')
-    .order('event_date', { ascending: true });
-
-  if (error) {
-    $('eventsList').innerHTML =
-      '<div class="empty">Errore nel caricamento: ' +
-      esc(error.message) +
-      '</div>';
-    return;
-  }
-
-  $('eventCount').textContent = data.length;
-
-  $('eventsList').innerHTML = data.length
-    ? data.map(e => `
-      <div class="item">
-        <div>
-          <h3>${esc(e.title)}</h3>
-          <p>
-            ${esc(e.event_date || '')}
-            ${e.place ? ' · ' + esc(e.place) : ''}
-            ${e.published ? '' : ' · NON PUBBLICATO'}
-          </p>
-          <p>${esc(e.description || '')}</p>
-          ${e.poster_url ? '<img class="admin-poster-thumb" src="' + esc(e.poster_url) + '" alt="Locandina">' : ''}
-        </div>
-
-        <button onclick="editEvent('${e.id}')">
-          Modifica
-        </button>
-
-        <button class="delete"
-                onclick="deleteEvent('${e.id}')">
-          Elimina
-        </button>
-      </div>
-    `).join('')
-    : '<div class="empty">Nessun evento.</div>';
+async function loadEvents() { await loadEventCollection('events', 'eventsList'); }
+async function loadFeaturedEvents() { await loadEventCollection('featured_events', 'featuredEventsList'); }
+async function loadEventCollection(table, targetId) {
+  const target = $(targetId);
+  if (!target) return;
+  const { data, error } = await client.from(table).select('*').order('event_date', { ascending: true });
+  if (error) { target.innerHTML = '<div class="empty">Errore nel caricamento: ' + esc(error.message) + '</div>'; return; }
+  target.innerHTML = data.length ? data.map(e => `
+    <div class="item"><div><h3>${esc(e.title)}</h3><p>${esc(e.event_date || '')}${e.place ? ' · ' + esc(e.place) : ''}${e.published ? '' : ' · NON PUBBLICATO'}</p><p>${esc(e.description || '')}</p>${e.poster_url ? '<img class="admin-poster-thumb" src="' + esc(e.poster_url) + '" alt="Locandina">' : ''}</div>
+    <button onclick="editEvent('${e.id}','${table}')">Modifica</button>
+    <button class="delete" onclick="deleteEvent('${e.id}','${table}')">Elimina</button></div>`).join('') : '<div class="empty">Nessun evento.</div>';
 }
 
 async function loadSiteContent() {
@@ -172,9 +144,9 @@ window.deleteGalleryImage = async (id, imageUrl) => {
   loadGallery();
 };
 
-window.editEvent = async id => {
+window.editEvent = async (id, table = 'events') => {
   const { data, error } = await client
-    .from('events')
+    .from(table)
     .select('*')
     .eq('id', id)
     .single();
@@ -185,8 +157,9 @@ window.editEvent = async id => {
   }
 
   editingId = id;
+  activeCollection = table;
 
-  $('modalTitle').textContent = 'Modifica evento';
+  $('modalTitle').textContent = table === 'featured_events' ? 'Modifica evento in evidenza' : 'Modifica evento';
   $('title').value = data.title || '';
   $('date').value = data.event_date || '';
   $('place').value = data.place || '';
@@ -202,11 +175,11 @@ window.editEvent = async id => {
   $('modal').classList.remove('hidden');
 };
 
-window.deleteEvent = async id => {
+window.deleteEvent = async (id, table = 'events') => {
   if (!confirm('Eliminare questo evento?')) return;
 
   const { error } = await client
-    .from('events')
+    .from(table)
     .delete()
     .eq('id', id);
 
@@ -215,22 +188,26 @@ window.deleteEvent = async id => {
     return;
   }
 
-  loadEvents();
+  table === 'featured_events' ? loadFeaturedEvents() : loadEvents();
 };
 
-$('newEvent').onclick = () => {
+function openNewEvent(table) {
+  activeCollection = table;
   editingId = null;
-
-  $('modalTitle').textContent = 'Nuovo evento';
+  $('modalTitle').textContent = table === 'featured_events' ? 'Nuovo evento in evidenza' : 'Nuovo evento';
   $('eventForm').reset();
   $('published').checked = true;
   $('poster').value = '';
   currentPosterUrl = null;
   $('currentPoster').innerHTML = '';
   $('formMessage').textContent = '';
-
   $('modal').classList.remove('hidden');
-};
+}
+
+$('newEvent').onclick = () => openNewEvent('events');
+$('newFeaturedEvent').onclick = () => openNewEvent('featured_events');
+
+$('newEvent').onclick = () => openNewEvent('events');
 
 $('closeModal').onclick =
 $('cancel').onclick = () => {
@@ -281,9 +258,9 @@ $('eventForm').addEventListener('submit', async e => {
   let result;
 
   if (editingId) {
-    result = await client.from('events').update(payload).eq('id', editingId);
+    result = await client.from(activeCollection).update(payload).eq('id', editingId);
   } else {
-    result = await client.from('events').insert(payload);
+    result = await client.from(activeCollection).insert(payload);
   }
 
   if (result.error) {
@@ -293,7 +270,7 @@ $('eventForm').addEventListener('submit', async e => {
   }
 
   $('modal').classList.add('hidden');
-  loadEvents();
+  activeCollection === 'featured_events' ? loadFeaturedEvents() : loadEvents();
 });
 
 $('loginForm').addEventListener('submit', async e => {
