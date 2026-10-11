@@ -165,7 +165,7 @@ window.editEvent = async (id, table = 'events') => {
 
   $('modalTitle').textContent = table === 'featured_events' ? 'Modifica evento in evidenza' : table === 'activity_events' ? 'Modifica attività' : 'Modifica evento';
   $('activityCategoryWrap').style.display = table === 'activity_events' ? 'block' : 'none';
-  $('eventPdfWrap').style.display = table === 'activity_events' ? 'none' : 'block';
+  $('eventPdfWrap').style.display = 'block';
   $('activityCategory').value = data.category || 'laboratori';
   $('title').value = data.title || '';
   $('date').value = data.event_date || '';
@@ -241,7 +241,7 @@ $('eventForm').addEventListener('submit', async e => {
   let posterUrl = currentPosterUrl;
   let pdfUrl = null;
 
-  if (editingId && (activeCollection === 'events' || activeCollection === 'featured_events')) {
+  if (editingId) {
     const existing = await client.from(activeCollection).select('pdf_url').eq('id', editingId).single();
     if (!existing.error) pdfUrl = existing.data?.pdf_url || null;
   }
@@ -294,7 +294,7 @@ $('eventForm').addEventListener('submit', async e => {
     poster_url: posterUrl || null
   };
   if (activeCollection === 'activity_events') payload.category = $('activityCategory').value;
-  if (activeCollection === 'events' || activeCollection === 'featured_events') payload.pdf_url = pdfUrl || null;
+  payload.pdf_url = pdfUrl || null;
 
   let result;
 
