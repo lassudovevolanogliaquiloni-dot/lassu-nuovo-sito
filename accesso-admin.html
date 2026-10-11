@@ -121,19 +121,17 @@
 
     <section class="panel">
       <div class="panel-title">
-        <div>
-          <h2>Eventi</h2>
-          <p class="hint">
-            Aggiungi, modifica o elimina gli appuntamenti del sito.
-          </p>
-        </div>
-
-        <button id="newEvent" class="add">
-          + Nuovo evento
-        </button>
+        <div><h2>Eventi</h2><p class="hint">Questi eventi vengono pubblicati solo nella pagina Eventi.</p></div>
+        <button id="newEvent" class="add">+ Nuovo evento</button>
       </div>
-
       <div id="eventsList"></div>
+    </section>
+    <section class="panel">
+      <div class="panel-title">
+        <div><h2>Eventi in evidenza</h2><p class="hint">Archivio separato: questi eventi vengono pubblicati solo nella Home.</p></div>
+        <button id="newFeaturedEvent" class="add">+ Nuovo evento in evidenza</button>
+      </div>
+      <div id="featuredEventsList"></div>
     </section>
   </main>
 </section>
@@ -191,7 +189,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="admin-config.js"></script>
-<script src="admin.js?v=20261010d"></script>
+<script src="admin.js?v=20261011a"></script>
 
 
 <!-- deployment refresh 2026-10-09 -->
