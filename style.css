@@ -12,3 +12,15 @@
 footer{font-size:12px}
 .empty-events h3{font-size:20px}.empty-events p{font-size:14px}
 @media(max-width:500px){.topbar nav a{font-size:14px}.card p,.card b{font-size:14px}.section-title h2,.gallery h2,.contact h2{font-size:28px}.section-title p,.gallery-copy p,.contact-intro p{font-size:15px}.details>div{font-size:14px}.details a{font-size:13px}footer{font-size:13px}}
+
+/* Testi ancora piu grandi */
+.card h3{font-size:23px}.card p,.card b{font-size:16px;line-height:1.55}
+.section-title small,.gallery-copy small,.contact-intro small{font-size:13px}
+.section-title h2,.gallery h2,.contact h2{font-size:35px}
+.section-title p,.gallery-copy p,.contact-intro p{font-size:17px;line-height:1.6}
+.outline,.redbtn{font-size:14px;padding:10px 16px}
+.event-list h3{font-size:20px}.event-list p{font-size:16px;line-height:1.6}
+.event-list strong{font-size:22px}.event-list strong small{font-size:10px}
+.gallery-empty{font-size:16px}.details>div{font-size:16px;line-height:1.7}.details a{font-size:15px}.contact-social p{font-size:16px}
+footer{font-size:14px}.empty-events h3{font-size:23px}.empty-events p{font-size:16px}
+@media(max-width:500px){.card h3{font-size:22px}.card p,.card b{font-size:16px}.section-title h2,.gallery h2,.contact h2{font-size:31px}.section-title p,.gallery-copy p,.contact-intro p{font-size:17px}.event-list h3{font-size:21px}.event-list p{font-size:16px}.details>div{font-size:16px}.details a{font-size:15px}footer{font-size:14px}}
