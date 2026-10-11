@@ -165,6 +165,7 @@ window.editEvent = async (id, table = 'events') => {
 
   $('modalTitle').textContent = table === 'featured_events' ? 'Modifica evento in evidenza' : table === 'activity_events' ? 'Modifica attività' : 'Modifica evento';
   $('activityCategoryWrap').style.display = table === 'activity_events' ? 'block' : 'none';
+  $('eventPdfWrap').style.display = table === 'activity_events' ? 'none' : 'block';
   $('activityCategory').value = data.category || 'laboratori';
   $('title').value = data.title || '';
   $('date').value = data.event_date || '';
@@ -196,7 +197,9 @@ window.deleteEvent = async (id, table = 'events') => {
     return;
   }
 
-  table === 'featured_events' ? loadFeaturedEvents() : loadEvents();
+  if (table === 'featured_events') loadFeaturedEvents();
+  else if (table === 'activity_events') loadActivityEvents();
+  else loadEvents();
 };
 
 function openNewEvent(table) {
@@ -204,6 +207,7 @@ function openNewEvent(table) {
   editingId = null;
   $('modalTitle').textContent = table === 'featured_events' ? 'Nuovo evento in evidenza' : table === 'activity_events' ? 'Nuova attività' : 'Nuovo evento';
   $('activityCategoryWrap').style.display = table === 'activity_events' ? 'block' : 'none';
+  $('eventPdfWrap').style.display = table === 'activity_events' ? 'none' : 'block';
   $('eventForm').reset();
   $('published').checked = true;
   $('activityCategory').value = 'laboratori';
