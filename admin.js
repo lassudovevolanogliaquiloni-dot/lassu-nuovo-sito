@@ -207,7 +207,7 @@ function openNewEvent(table) {
   editingId = null;
   $('modalTitle').textContent = table === 'featured_events' ? 'Nuovo evento in evidenza' : table === 'activity_events' ? 'Nuova attività' : 'Nuovo evento';
   $('activityCategoryWrap').style.display = table === 'activity_events' ? 'block' : 'none';
-  $('eventPdfWrap').style.display = table === 'activity_events' ? 'none' : 'block';
+  $('eventPdfWrap').style.display = 'block';
   $('eventForm').reset();
   $('published').checked = true;
   $('activityCategory').value = 'laboratori';
