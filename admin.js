@@ -58,6 +58,7 @@ async function loadSiteContent() {
   $('contentSubtitle').value = data.subtitle || 'Giovanni per Sempre';
   $('contentTagline').value = data.tagline || 'Insieme per la cultura, la solidarietà e la bellezza delle piccole grandi cose.';
   $('contentChiSiamo').value = data.chi_siamo || 'Una realtà nata dal cuore di persone che credono nei valori della solidarietà, della cultura e del territorio.';
+  $('contentStoria').value = data.storia || '';
   $('contentAttivita').value = data.attivita || 'Laboratori, iniziative culturali, progetti educativi e momenti di condivisione per tutte le età.';
   $('contentNews').value = data.news || 'News, aggiornamenti e nuove iniziative dell’Associazione.';
   $('contentGalleria').value = data.galleria || 'Scatti, emozioni e sorrisi delle nostre attività e dei nostri eventi.';
@@ -72,6 +73,7 @@ $('siteContentForm').addEventListener('submit', async e => {
     subtitle: $('contentSubtitle').value.trim(),
     tagline: $('contentTagline').value.trim(),
     chi_siamo: $('contentChiSiamo').value.trim(),
+    storia: $('contentStoria').value.trim(),
     attivita: $('contentAttivita').value.trim(),
     news: $('contentNews').value.trim(),
     galleria: $('contentGalleria').value.trim(),
