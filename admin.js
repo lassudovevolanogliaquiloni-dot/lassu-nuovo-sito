@@ -25,6 +25,7 @@ function showApp(email) {
   $('userEmail').textContent = email ? ' · ' + email : '';
   loadEvents();
   loadFeaturedEvents();
+  loadActivityEvents();
   loadSiteContent();
   loadGallery();
 }
@@ -37,6 +38,7 @@ function showLogin() {
 
 async function loadEvents() { await loadEventCollection('events', 'eventsList'); }
 async function loadFeaturedEvents() { await loadEventCollection('featured_events', 'featuredEventsList'); }
+async function loadActivityEvents() { await loadEventCollection('activity_events', 'activityEventsList'); }
 async function loadEventCollection(table, targetId) {
   const target = $(targetId);
   if (!target) return;
@@ -161,7 +163,9 @@ window.editEvent = async (id, table = 'events') => {
   editingId = id;
   activeCollection = table;
 
-  $('modalTitle').textContent = table === 'featured_events' ? 'Modifica evento in evidenza' : 'Modifica evento';
+  $('modalTitle').textContent = table === 'featured_events' ? 'Modifica evento in evidenza' : table === 'activity_events' ? 'Modifica attività' : 'Modifica evento';
+  $('activityCategoryWrap').style.display = table === 'activity_events' ? 'block' : 'none';
+  $('activityCategory').value = data.category || 'laboratori';
   $('title').value = data.title || '';
   $('date').value = data.event_date || '';
   $('place').value = data.place || '';
@@ -198,9 +202,11 @@ window.deleteEvent = async (id, table = 'events') => {
 function openNewEvent(table) {
   activeCollection = table;
   editingId = null;
-  $('modalTitle').textContent = table === 'featured_events' ? 'Nuovo evento in evidenza' : 'Nuovo evento';
+  $('modalTitle').textContent = table === 'featured_events' ? 'Nuovo evento in evidenza' : table === 'activity_events' ? 'Nuova attività' : 'Nuovo evento';
+  $('activityCategoryWrap').style.display = table === 'activity_events' ? 'block' : 'none';
   $('eventForm').reset();
   $('published').checked = true;
+  $('activityCategory').value = 'laboratori';
   $('poster').value = '';
   $('eventPdf').value = '';
   $('currentPdf').innerHTML = '';
@@ -212,6 +218,7 @@ function openNewEvent(table) {
 
 $('newEvent').onclick = () => openNewEvent('events');
 $('newFeaturedEvent').onclick = () => openNewEvent('featured_events');
+$('newActivityEvent').onclick = () => openNewEvent('activity_events');
 
 $('newEvent').onclick = () => openNewEvent('events');
 
@@ -282,6 +289,7 @@ $('eventForm').addEventListener('submit', async e => {
     published: $('published').checked,
     poster_url: posterUrl || null
   };
+  if (activeCollection === 'activity_events') payload.category = $('activityCategory').value;
   if (activeCollection === 'events') payload.pdf_url = pdfUrl || null;
 
   let result;
@@ -299,7 +307,9 @@ $('eventForm').addEventListener('submit', async e => {
   }
 
   $('modal').classList.add('hidden');
-  activeCollection === 'featured_events' ? loadFeaturedEvents() : loadEvents();
+  if (activeCollection === 'featured_events') loadFeaturedEvents();
+  else if (activeCollection === 'activity_events') loadActivityEvents();
+  else loadEvents();
 });
 
 $('loginForm').addEventListener('submit', async e => {
