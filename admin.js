@@ -228,8 +228,8 @@ $('eventForm').addEventListener('submit', async e => {
   let posterUrl = currentPosterUrl;
   let pdfUrl = null;
 
-  if (editingId) {
-    const existing = await client.from(activeCollection).select('pdf_url').eq('id', editingId).single();
+  if (editingId && activeCollection === 'events') {
+    const existing = await client.from('events').select('pdf_url').eq('id', editingId).single();
     if (!existing.error) pdfUrl = existing.data?.pdf_url || null;
   }
 
@@ -278,9 +278,9 @@ $('eventForm').addEventListener('submit', async e => {
     place: $('place').value.trim() || null,
     description: $('description').value.trim() || null,
     published: $('published').checked,
-    poster_url: posterUrl || null,
-    pdf_url: pdfUrl || null
+    poster_url: posterUrl || null
   };
+  if (activeCollection === 'events') payload.pdf_url = pdfUrl || null;
 
   let result;
 
