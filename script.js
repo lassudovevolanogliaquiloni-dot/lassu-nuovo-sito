@@ -93,7 +93,7 @@ async function loadFeaturedEventsPublic() {
   box.innerHTML = events.map(e => {
     const date = e.event_date ? new Date(e.event_date + 'T00:00:00').toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}) : 'Data da definire';
     const poster = e.poster_url ? '<img class="event-poster" src="' + esc(e.poster_url) + '" alt="Locandina ' + esc(e.title) + '">' : '';
-    return '<article><div class="event-info">' + poster + '<div class="event-meta">' + esc(date) + (e.place ? ' · ' + esc(e.place) : '') + '</div><h3>' + esc(e.title) + '</h3><p>' + esc(e.description || '') + '</p></div></article>';
+    const pdf = e.pdf_url ? '<p><a class="event-pdf" href="' + esc(e.pdf_url) + '" target="_blank" rel="noopener">📄 Apri il programma PDF</a></p>' : ''; return '<article><div class="event-info">' + poster + '<div class="event-meta">' + esc(date) + (e.place ? ' · ' + esc(e.place) : '') + '</div><h3>' + esc(e.title) + '</h3><p>' + esc(e.description || '') + '</p>' + pdf + '</div></article>';
   }).join('');
 }
 
