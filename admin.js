@@ -239,7 +239,7 @@ $('eventForm').addEventListener('submit', async e => {
     });
 
     if (upload.error) {
-      $('formMessage').textContent = 'Errore caricamento locandina: ' + upload.error.message;
+      $('formMessage').textContent = 'Errore caricamento locandina: ' + (upload.error.message || upload.error.error_description || JSON.stringify(upload.error));
       return;
     }
 
@@ -265,7 +265,7 @@ $('eventForm').addEventListener('submit', async e => {
 
   if (result.error) {
     $('formMessage').textContent =
-      'Errore: ' + result.error.message;
+      'Errore salvataggio evento: ' + (result.error.message || result.error.details || JSON.stringify(result.error));
     return;
   }
 
