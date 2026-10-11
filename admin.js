@@ -43,7 +43,7 @@ async function loadEventCollection(table, targetId) {
   const { data, error } = await client.from(table).select('*').order('event_date', { ascending: true });
   if (error) { target.innerHTML = '<div class="empty">Errore nel caricamento: ' + esc(error.message) + '</div>'; return; }
   target.innerHTML = data.length ? data.map(e => `
-    <div class="item"><div><h3>${esc(e.title)}</h3><p>${esc(e.event_date || '')}${e.place ? ' · ' + esc(e.place) : ''}${e.published ? '' : ' · NON PUBBLICATO'}</p><p>${esc(e.description || '')}</p>${e.poster_url ? '<img class="admin-poster-thumb" src="' + esc(e.poster_url) + '" alt="Locandina">' : ''}</div>
+    <div class="item"><div><h3>${esc(e.title)}</h3><p>${esc(e.event_date || '')}${e.place ? ' · ' + esc(e.place) : ''}${e.published ? '' : ' · NON PUBBLICATO'}</p><p>${esc(e.description || '')}</p>${e.poster_url ? '<img class="admin-poster-thumb" src="' + esc(e.poster_url) + '" alt="Locandina">' : ''}${e.pdf_url ? '<p><a href="' + esc(e.pdf_url) + '" target="_blank" rel="noopener">📄 Apri PDF</a></p>' : ''}</div>
     <button onclick="editEvent('${e.id}','${table}')">Modifica</button>
     <button class="delete" onclick="deleteEvent('${e.id}','${table}')">Elimina</button></div>`).join('') : '<div class="empty">Nessun evento.</div>';
 }
@@ -170,6 +170,8 @@ window.editEvent = async (id, table = 'events') => {
   $('currentPoster').innerHTML = currentPosterUrl
     ? '<p>Locandina attuale:</p><img class="current-poster" src="' + esc(currentPosterUrl) + '" alt="Locandina attuale">'
     : '';
+  $('eventPdf').value = '';
+  $('currentPdf').innerHTML = data.pdf_url ? 'PDF attuale: <a href="' + esc(data.pdf_url) + '" target="_blank" rel="noopener">Apri PDF</a>' : '';
   $('formMessage').textContent = '';
 
   $('modal').classList.remove('hidden');
@@ -198,6 +200,8 @@ function openNewEvent(table) {
   $('eventForm').reset();
   $('published').checked = true;
   $('poster').value = '';
+  $('eventPdf').value = '';
+  $('currentPdf').innerHTML = '';
   currentPosterUrl = null;
   $('currentPoster').innerHTML = '';
   $('formMessage').textContent = '';
@@ -222,6 +226,12 @@ $('eventForm').addEventListener('submit', async e => {
   $('formMessage').textContent = file ? 'Caricamento della locandina…' : 'Salvataggio…';
 
   let posterUrl = currentPosterUrl;
+  let pdfUrl = null;
+
+  if (editingId) {
+    const existing = await client.from(activeCollection).select('pdf_url').eq('id', editingId).single();
+    if (!existing.error) pdfUrl = existing.data?.pdf_url || null;
+  }
 
   if (file) {
     if (!file.type.startsWith('image/')) {
@@ -246,13 +256,30 @@ $('eventForm').addEventListener('submit', async e => {
     posterUrl = client.storage.from('event-posters').getPublicUrl(filePath).data.publicUrl;
   }
 
+  const pdfFile = $('eventPdf').files[0];
+  if (pdfFile) {
+    if (pdfFile.type !== 'application/pdf' && !pdfFile.name.toLowerCase().endsWith('.pdf')) {
+      $('formMessage').textContent = 'Errore: seleziona un file PDF.';
+      return;
+    }
+    const pdfName = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())) + '.pdf';
+    const pdfPath = 'pdfs/' + pdfName;
+    const uploadPdf = await client.storage.from('event-posters').upload(pdfPath, pdfFile, { cacheControl: '31536000', upsert: false, contentType: 'application/pdf' });
+    if (uploadPdf.error) {
+      $('formMessage').textContent = 'Errore caricamento PDF: ' + (uploadPdf.error.message || JSON.stringify(uploadPdf.error));
+      return;
+    }
+    pdfUrl = client.storage.from('event-posters').getPublicUrl(pdfPath).data.publicUrl;
+  }
+
   const payload = {
     title: $('title').value.trim(),
     event_date: $('date').value || null,
     place: $('place').value.trim() || null,
     description: $('description').value.trim() || null,
     published: $('published').checked,
-    poster_url: posterUrl || null
+    poster_url: posterUrl || null,
+    pdf_url: pdfUrl || null
   };
 
   let result;
