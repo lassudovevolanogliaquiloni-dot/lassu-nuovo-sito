@@ -36,6 +36,29 @@
  .hero p{font-size:13px}
  .hero-center>a{padding:10px 20px}
 }
+</style><style>
+/* Logo più grande e scritta calligrafica ispirata al marchio */
+.hero-logo{top:15px!important;width:122px!important;height:122px!important}
+.hero-logo img{border-radius:50%;object-fit:cover;box-shadow:0 6px 20px #075eaa38}
+.hero-center{padding-top:151px!important;transform:none!important}
+.hero h1,.hero h2{font-family:"Brush Script MT","Segoe Script","URW Chancery L",cursive!important;font-style:italic}
+.hero h1{font-size:clamp(43px,5.6vw,60px)!important;line-height:.9!important;text-shadow:0 2px 0 #fff,0 0 8px #fff9}
+.hero h2{font-size:clamp(28px,3.4vw,36px)!important;margin-top:12px!important}
+.home-kite{filter:drop-shadow(0 3px 3px #164c681c)}
+.home-kite svg{overflow:visible}
+.home-kite.kite-six{left:31%;top:12%;width:39px;height:60px;animation-duration:18s;animation-delay:-7s}
+.home-kite.kite-seven{right:28%;bottom:8%;width:34px;height:52px;animation-duration:16s;animation-delay:-3s}
+.home-kite.kite-eight{right:13%;top:48%;width:30px;height:46px;animation-duration:20s;animation-delay:-11s}
+@media(max-width:600px){
+ .hero-logo{top:10px!important;width:88px!important;height:88px!important}
+ .hero-center{padding-top:112px!important}
+ .hero h1{font-size:40px!important;line-height:.91!important}
+ .hero h2{font-size:26px!important;margin-top:9px!important}
+ .hero p{font-size:13px}
+ .home-kite.kite-six{left:24%;top:8%;width:27px;height:42px}
+ .home-kite.kite-seven{right:23%;bottom:7%;width:25px;height:38px}
+ .home-kite.kite-eight{right:4%;top:43%;width:22px;height:34px}
+}
 </style></head>
 <body>
 <header class="topbar"><nav id="mainNav"><a class="sel" href="#home">Home</a><a href="#chi-siamo">Chi siamo</a><a href="#attivita">Le nostre attività</a><a href="eventi.html?v=20261010n">Eventi</a><a href="#novita">News</a><a href="#galleria">Galleria fotografica</a><a href="#contatti">Contatti</a><a href="accesso-admin.html" class="admin-menu-link">Area amministratore</a></nav><button class="menu" aria-label="Apri menu" aria-expanded="false">☰</button></header>
@@ -44,7 +67,9 @@
 <span class="home-kite kite-one"><svg viewBox="0 0 60 90"><path d="M30 2 L56 30 L30 58 L4 30 Z" fill="#f2c400" stroke="#fff" stroke-width="2"/><path d="M30 2 L30 58 M4 30 L56 30" stroke="#fff" stroke-width="1.5"/><path class="kite-string" d="M30 58 Q42 70 30 88"/><path d="M35 67 l8 3 -5 6 Z" fill="#e85d75"/><path d="M30 78 l-8 3 5 6 Z" fill="#55a9d6"/></svg></span>
 <span class="home-kite kite-two"><svg viewBox="0 0 60 90"><path d="M30 2 L56 30 L30 58 L4 30 Z" fill="#65b9df" stroke="#fff" stroke-width="2"/><path d="M30 2 L30 58 M4 30 L56 30" stroke="#fff" stroke-width="1.5"/><path class="kite-string" d="M30 58 Q18 70 32 88"/><path d="M25 67 l-8 3 5 6 Z" fill="#f2c400"/><path d="M32 78 l8 3 -5 6 Z" fill="#e85d75"/></svg></span>
 <span class="home-kite kite-three"><svg viewBox="0 0 60 90"><path d="M30 2 L56 30 L30 58 L4 30 Z" fill="#e9829a" stroke="#fff" stroke-width="2"/><path d="M30 2 L30 58 M4 30 L56 30" stroke="#fff" stroke-width="1.5"/><path class="kite-string" d="M30 58 Q43 72 27 88"/><path d="M35 67 l8 3 -5 6 Z" fill="#65b9df"/></svg></span>
-</div><div class="hero-logo"><img src="assets/logo.jpg" alt="Lassù dove Volano gli Aquiloni — Giovanni per Sempre"></div><div class="cloud cloud1"></div><div class="cloud cloud2"></div><div class="hero-center"><h1 id="siteTitle">“Lassù dove<br>Volano gli<br>Aquiloni”</h1><h2 id="siteSubtitle">Giovanni per Sempre</h2><p id="siteTagline">Insieme per la cultura, la solidarietà<br>e la bellezza delle piccole grandi cose.</p><a href="#chi-siamo">Scopri di più →</a></div><span class="home-kite kite-four"><svg viewBox="0 0 60 90"><path d="M30 2 L56 30 L30 58 L4 30 Z" fill="#8ccf9b" stroke="#fff" stroke-width="2"/><path d="M30 2 L30 58 M4 30 L56 30" stroke="#fff" stroke-width="1.5"/><path class="kite-string" d="M30 58 Q18 70 31 88"/></svg></span>
+<span class="home-kite kite-six"><svg viewBox="0 0 80 120"><defs><linearGradient id="kiteGrad6" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff06a"/><stop offset="1" stop-color="#ff8a4c"/></linearGradient></defs><path d="M40 3 L74 39 L40 76 L6 39 Z" fill="url(#kiteGrad6)" stroke="#fff" stroke-width="2.5"/><path d="M40 3V76M6 39H74M40 3L6 39L40 76L74 39Z" fill="none" stroke="#fff" stroke-width="1.7"/><path class="kite-string" d="M40 76 Q56 90 40 115"/><path d="M43 86l13 3-8 10zM37 101l-12 3 7 10z" fill="#e85d75" stroke="#fff" stroke-width="1"/></svg></span>
+<span class="home-kite kite-seven"><svg viewBox="0 0 80 120"><defs><linearGradient id="kiteGrad7" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9ef0ce"/><stop offset="1" stop-color="#2b9ec9"/></linearGradient></defs><path d="M40 3 L74 39 L40 76 L6 39 Z" fill="url(#kiteGrad7)" stroke="#fff" stroke-width="2.5"/><path d="M40 3V76M6 39H74M40 3L6 39L40 76L74 39Z" fill="none" stroke="#fff" stroke-width="1.7"/><path class="kite-string" d="M40 76 Q22 91 42 115"/><path d="M34 87l-13 3 8 10zM43 102l12 3-7 10z" fill="#f5b5d0" stroke="#fff" stroke-width="1"/></svg></span>
+<span class="home-kite kite-eight"><svg viewBox="0 0 80 120"><defs><linearGradient id="kiteGrad8" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f9a9c4"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M40 3 L74 39 L40 76 L6 39 Z" fill="url(#kiteGrad8)" stroke="#fff" stroke-width="2.5"/><path d="M40 3V76M6 39H74M40 3L6 39L40 76L74 39Z" fill="none" stroke="#fff" stroke-width="1.7"/><path class="kite-string" d="M40 76 Q55 92 39 115"/><path d="M43 87l13 3-8 10zM36 102l-12 3 7 10z" fill="#f2c400" stroke="#fff" stroke-width="1"/></svg></span></div><div class="hero-logo"><img src="assets/logo.jpg" alt="Lassù dove Volano gli Aquiloni — Giovanni per Sempre"></div><div class="cloud cloud1"></div><div class="cloud cloud2"></div><div class="hero-center"><h1 id="siteTitle">“Lassù dove<br>Volano gli<br>Aquiloni”</h1><h2 id="siteSubtitle">Giovanni per Sempre</h2><p id="siteTagline">Insieme per la cultura, la solidarietà<br>e la bellezza delle piccole grandi cose.</p><a href="#chi-siamo">Scopri di più →</a></div><span class="home-kite kite-four"><svg viewBox="0 0 60 90"><path d="M30 2 L56 30 L30 58 L4 30 Z" fill="#8ccf9b" stroke="#fff" stroke-width="2"/><path d="M30 2 L30 58 M4 30 L56 30" stroke="#fff" stroke-width="1.5"/><path class="kite-string" d="M30 58 Q18 70 31 88"/></svg></span>
 <span class="home-kite kite-five"><svg viewBox="0 0 60 90"><path d="M30 2 L56 30 L30 58 L4 30 Z" fill="#f3a35c" stroke="#fff" stroke-width="2"/><path d="M30 2 L30 58 M4 30 L56 30" stroke="#fff" stroke-width="1.5"/><path class="kite-string" d="M30 58 Q42 72 28 88"/></svg></span></div></section>
 <section class="news section" id="novita"><div class="section-title"><div class="round-icon">📣</div><div><small class="news-blink">NEWS</small><h2>News</h2><p id="siteNews">News, aggiornamenti e nuove iniziative dell’Associazione.</p></div></div></section><section class="events section" id="eventi-evidenza"><div class="section-title"><div class="round-icon">▣</div><div><small>IN PRIMO PIANO</small><h2>Eventi in evidenza</h2><p>Scopri gli ultimi eventi dell’Associazione.</p></div></div><div class="event-list" id="featuredEventList"><article class="empty-events"><h3>In evidenza</h3><p>Caricamento degli eventi...</p></article></div></section>
 <section class="cards" id="chi-siamo">
