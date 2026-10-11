@@ -241,8 +241,8 @@ $('eventForm').addEventListener('submit', async e => {
   let posterUrl = currentPosterUrl;
   let pdfUrl = null;
 
-  if (editingId && activeCollection === 'events') {
-    const existing = await client.from('events').select('pdf_url').eq('id', editingId).single();
+  if (editingId && (activeCollection === 'events' || activeCollection === 'featured_events')) {
+    const existing = await client.from(activeCollection).select('pdf_url').eq('id', editingId).single();
     if (!existing.error) pdfUrl = existing.data?.pdf_url || null;
   }
 
@@ -294,7 +294,7 @@ $('eventForm').addEventListener('submit', async e => {
     poster_url: posterUrl || null
   };
   if (activeCollection === 'activity_events') payload.category = $('activityCategory').value;
-  if (activeCollection === 'events') payload.pdf_url = pdfUrl || null;
+  if (activeCollection === 'events' || activeCollection === 'featured_events') payload.pdf_url = pdfUrl || null;
 
   let result;
 
